@@ -13,6 +13,7 @@ const resetButton = document.querySelector("[data-form-reset]");
 const yearElement = document.querySelector("[data-current-year]");
 const analysisSection = document.querySelector("#analise");
 const strategyDiagram = document.querySelector("[data-strategy-diagram]");
+const heroSection = document.querySelector("#inicio");
 
 let currentStep = 1;
 
@@ -132,6 +133,17 @@ if (analysisSection && "IntersectionObserver" in window) {
   );
 
   analysisObserver.observe(analysisSection);
+}
+
+if (heroSection && "IntersectionObserver" in window) {
+  const heroObserver = new IntersectionObserver(
+    ([entry]) => {
+      document.body.classList.toggle("past-hero", !entry.isIntersecting);
+    },
+    { threshold: 0.05 },
+  );
+
+  heroObserver.observe(heroSection);
 }
 
 if (strategyDiagram && "IntersectionObserver" in window) {
