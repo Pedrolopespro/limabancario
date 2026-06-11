@@ -1327,8 +1327,8 @@ fieldset {
 }
 
 .specialist-portrait > img {
-  object-position: center 24%;
-  filter: saturate(0.88) contrast(1.03);
+  object-position: center;
+  filter: saturate(0.94) contrast(1.02);
 }
 
 .specialist-portrait::before {
