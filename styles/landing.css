@@ -1087,6 +1087,8 @@ fieldset {
 }
 
 .difference-diagram {
+  --strategy-orbit-radius: clamp(8rem, 13vw, 11.3rem);
+
   position: relative;
   display: grid;
   aspect-ratio: 1;
@@ -1096,26 +1098,191 @@ fieldset {
   border-radius: 50%;
   background: rgba(7, 24, 39, 0.14);
   clip-path: circle(50%);
+  isolation: isolate;
+}
+
+.difference-diagram::before {
+  position: absolute;
+  z-index: 3;
+  inset: 2.5%;
+  border: 1px dashed rgba(7, 24, 39, 0.18);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.difference-diagram::after {
+  position: absolute;
+  z-index: 4;
+  top: calc(50% - 0.28rem);
+  left: calc(50% - 0.28rem);
+  width: 0.56rem;
+  height: 0.56rem;
+  border: 2px solid var(--ivory-100);
+  border-radius: 50%;
+  background: var(--bronze-500);
+  box-shadow: 0 0 0 1px rgba(7, 24, 39, 0.2);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: rotate(-90deg) translateX(var(--strategy-orbit-radius));
+  transform-origin: 0.28rem 0.28rem;
 }
 
 .difference-diagram span {
+  position: relative;
   display: grid;
+  overflow: hidden;
   background: var(--ivory-100);
   color: var(--slate-700);
   font-size: var(--text-xs);
   place-items: center;
 }
 
+.difference-diagram span::before {
+  position: absolute;
+  inset: 0;
+  background: rgba(181, 154, 104, 0.13);
+  content: "";
+  opacity: 0;
+  transform: scale(0.7);
+}
+
+.difference-diagram span b {
+  position: relative;
+  z-index: 1;
+  font-weight: 500;
+  transition:
+    color 400ms ease,
+    transform 400ms ease;
+}
+
 .difference-diagram i {
   position: absolute;
+  z-index: 5;
   top: 50%;
   left: 50%;
+  display: flex;
   width: 25%;
   aspect-ratio: 1;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   border: 1px solid rgba(7, 24, 39, 0.18);
   border-radius: 50%;
   background: var(--navy-950);
+  box-shadow: 0 0 0 0 rgba(7, 24, 39, 0.12);
+  color: var(--ivory-100);
+  font-style: normal;
   transform: translate(-50%, -50%);
+}
+
+.difference-diagram i b {
+  font-size: clamp(0.65rem, 0.8vw, 0.82rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.difference-diagram i small {
+  margin-top: 0.1rem;
+  color: rgba(245, 241, 228, 0.55);
+  font-size: clamp(0.42rem, 0.55vw, 0.58rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.difference-diagram.is-visible::before {
+  animation: strategyRing 22s linear infinite;
+}
+
+.difference-diagram.is-visible::after {
+  animation: strategyOrbit 8s linear infinite;
+}
+
+.difference-diagram.is-visible i {
+  animation: strategyCore 4s ease-in-out infinite;
+}
+
+.difference-diagram.is-visible span::before {
+  animation: strategyArea 8s ease-in-out infinite;
+}
+
+.difference-diagram.is-visible span b {
+  animation: strategyLabel 8s ease-in-out infinite;
+}
+
+.difference-diagram.is-visible span:nth-child(2)::before,
+.difference-diagram.is-visible span:nth-child(2) b {
+  animation-delay: 2s;
+}
+
+.difference-diagram.is-visible span:nth-child(4)::before,
+.difference-diagram.is-visible span:nth-child(4) b {
+  animation-delay: 4s;
+}
+
+.difference-diagram.is-visible span:nth-child(3)::before,
+.difference-diagram.is-visible span:nth-child(3) b {
+  animation-delay: 6s;
+}
+
+@keyframes strategyRing {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes strategyOrbit {
+  0% {
+    opacity: 0;
+    transform: rotate(-90deg) translateX(var(--strategy-orbit-radius));
+  }
+  5%,
+  95% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(270deg) translateX(var(--strategy-orbit-radius));
+  }
+}
+
+@keyframes strategyCore {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(7, 24, 39, 0.12);
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 0.75rem rgba(7, 24, 39, 0);
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+}
+
+@keyframes strategyArea {
+  0%,
+  18% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  7%,
+  11% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes strategyLabel {
+  0%,
+  18% {
+    color: var(--slate-700);
+    transform: translateY(0);
+  }
+  7%,
+  11% {
+    color: var(--navy-950);
+    transform: translateY(-0.2rem);
+  }
 }
 
 .specialist-section {
