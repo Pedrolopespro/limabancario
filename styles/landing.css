@@ -599,45 +599,18 @@ fieldset {
   inset: 34%;
 }
 
-.visual-mark {
+.visual-logo-mark {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 40%;
-  height: 48%;
-  transform: translate(-50%, -50%) scaleX(-1) rotate(45deg);
-}
-
-.visual-mark span {
-  position: absolute;
-  display: block;
-  height: 14%;
-  border-radius: var(--radius-pill);
-  background: var(--ivory-100);
-  box-shadow: 0 0 2rem rgba(245, 241, 228, 0.05);
-}
-
-.visual-mark__long {
-  top: 15%;
-  left: 0;
-  width: 100%;
-}
-
-.visual-mark__long::after {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 14%;
-  height: 290%;
-  border-radius: inherit;
-  background: inherit;
-  content: "";
-}
-
-.visual-mark__short {
-  right: 2%;
-  bottom: 13%;
-  width: 43%;
+  width: 48%;
+  height: auto;
+  opacity: 0.72;
+  filter:
+    saturate(0.72)
+    brightness(1.48)
+    drop-shadow(0 0 3rem rgba(111, 152, 170, 0.18));
+  transform: translate(-50%, -50%);
 }
 
 .visual-caption {
