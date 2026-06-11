@@ -38,10 +38,10 @@
   --font-sans:
     "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-display: var(--font-sans);
-  --text-xs: 0.6875rem;
-  --text-sm: 0.8125rem;
-  --text-base: 1rem;
-  --text-lg: clamp(1.0625rem, 1vw + 0.75rem, 1.25rem);
+  --text-xs: 0.875rem;
+  --text-sm: 1rem;
+  --text-base: 1.0625rem;
+  --text-lg: clamp(1.25rem, 1vw + 0.85rem, 1.5rem);
   --text-xl: clamp(1.5rem, 2vw, 2rem);
   --text-2xl: clamp(2.25rem, 4.2vw, 4rem);
   --text-3xl: clamp(3.25rem, 7vw, 7rem);
