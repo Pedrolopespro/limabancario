@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Design system do Lima Ferreira Direito Bancário Empresarial."
+    />
+    <title>Design System | Lima Ferreira Direito Bancário Empresarial</title>
+    <link rel="stylesheet" href="styles/tokens.css" />
+    <link rel="stylesheet" href="styles/design-system.css" />
+    <script src="scripts/design-system.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#topo" aria-label="Lima Ferreira - início">
+          <img
+            src="logos/lima_ferreira_bancario_horizontal_ivory_sem_fundo.png"
+            alt="Lima Ferreira Direito Bancário Empresarial"
+          />
+        </a>
+
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="primary-navigation"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+          <span class="sr-only">Abrir navegação</span>
+        </button>
+
+        <nav id="primary-navigation" class="primary-navigation" aria-label="Design system">
+          <a href="#fundamentos">Fundamentos</a>
+          <a href="#componentes">Componentes</a>
+          <a href="#padroes">Padrões</a>
+        </nav>
+
+        <button class="button button--ivory button--small grid-toggle" type="button" aria-pressed="false">
+          <span class="button-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20">
+              <path d="M3 3h14v14H3zM3 8h14M8 3v14" />
+            </svg>
+          </span>
+          Grade
+        </button>
+      </div>
+    </header>
+
+    <main id="conteudo">
+      <section id="topo" class="hero">
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="hero-glow" aria-hidden="true"></div>
+
+        <div class="container hero-layout">
+          <div class="hero-copy">
+            <div class="section-kicker section-kicker--light">
+              <span>LF / DS</span>
+              <span>Versão 01</span>
+            </div>
+            <p class="eyebrow">Sistema visual</p>
+            <h1>Clareza jurídica.<br /><span>Precisão empresarial.</span></h1>
+            <p class="hero-description">
+              Uma linguagem visual sóbria, contemporânea e modular para orientar a futura
+              experiência digital da marca.
+            </p>
+            <div class="hero-actions">
+              <a class="button button--ivory" href="#fundamentos">
+                Explorar sistema
+                <span class="button-icon" aria-hidden="true">
+                  <svg viewBox="0 0 20 20">
+                    <path d="M4 10h11M11 6l4 4-4 4" />
+                  </svg>
+                </span>
+              </a>
+              <span class="hero-note">Conteúdo demonstrativo</span>
+            </div>
+          </div>
+
+          <div class="hero-visual" aria-label="Composição geométrica da identidade visual">
+            <div class="visual-index">01</div>
+            <div class="visual-axis visual-axis--horizontal"></div>
+            <div class="visual-axis visual-axis--vertical"></div>
+            <div class="visual-arc visual-arc--large"></div>
+            <div class="visual-arc visual-arc--small"></div>
+            <div class="visual-mark">
+              <span class="visual-mark__long"></span>
+              <span class="visual-mark__short"></span>
+            </div>
+            <p class="visual-caption">Estratégia / Estrutura / Continuidade</p>
+          </div>
+        </div>
+
+        <div class="container hero-footer">
+          <div>
+            <strong>12 col.</strong>
+            <span>Grade estrutural</span>
+          </div>
+          <div>
+            <strong>AA</strong>
+            <span>Contraste mínimo</span>
+          </div>
+          <div>
+            <strong>4 px</strong>
+            <span>Unidade-base</span>
+          </div>
+          <div>
+            <strong>180 ms</strong>
+            <span>Movimento funcional</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="manifesto">
+        <div class="container manifesto-layout">
+          <p class="section-number">01 / Direção</p>
+          <div>
+            <p class="display-copy">
+              Autoridade sem rigidez.<br />
+              <span>Proximidade sem informalidade.</span>
+            </p>
+            <p class="body-large manifesto-description">
+              O sistema evita símbolos jurídicos literais e constrói confiança por meio de
+              proporção, contraste, ritmo e informação bem organizada.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="fundamentos" class="section section--mist">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="section-number">02 / Fundamentos</p>
+              <h2>Decisões visuais<br />que sustentam a marca.</h2>
+            </div>
+            <p class="section-intro">
+              Tokens preparados para uma interface premium, legível e consistente em diferentes
+              páginas e dispositivos.
+            </p>
+          </div>
+
+          <div class="principles-grid">
+            <article class="principle-card">
+              <span class="principle-card__index">01</span>
+              <div class="principle-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 19V5h16v14H4ZM8 5v14M4 10h16" />
+                </svg>
+              </div>
+              <h3>Estrutura</h3>
+              <p>Hierarquia firme, alinhamentos visíveis e composição modular.</p>
+            </article>
+            <article class="principle-card">
+              <span class="principle-card__index">02</span>
+              <div class="principle-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 12h14M12 5v14M7 7l10 10M17 7 7 17" />
+                </svg>
+              </div>
+              <h3>Clareza</h3>
+              <p>Leitura imediata, linguagem direta e densidade controlada.</p>
+            </article>
+            <article class="principle-card principle-card--dark">
+              <span class="principle-card__index">03</span>
+              <div class="principle-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 17 10 5l4 8 2-4 4 8H4Z" />
+                </svg>
+              </div>
+              <h3>Confiança</h3>
+              <p>Contraste sóbrio e presença visual sem excesso de ornamentação.</p>
+            </article>
+            <article class="principle-card">
+              <span class="principle-card__index">04</span>
+              <div class="principle-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 12h16M14 6l6 6-6 6" />
+                </svg>
+              </div>
+              <h3>Direção</h3>
+              <p>Chamadas objetivas e fluxos que conduzem a decisões seguras.</p>
+            </article>
+          </div>
+
+          <div class="foundation-block">
+            <div class="block-heading">
+              <div>
+                <p class="eyebrow eyebrow--dark">02.1 / Cor</p>
+                <h3>Paleta institucional</h3>
+              </div>
+              <p>Azuis densos estabelecem autoridade; marfim e névoa preservam acolhimento.</p>
+            </div>
+
+            <div class="color-grid">
+              <button class="color-swatch color-swatch--navy" type="button" data-copy="#071827">
+                <span class="color-swatch__name">Navy 950</span>
+                <span>#071827</span>
+              </button>
+              <button class="color-swatch color-swatch--slate" type="button" data-copy="#173246">
+                <span class="color-swatch__name">Slate 800</span>
+                <span>#173246</span>
+              </button>
+              <button class="color-swatch color-swatch--blue" type="button" data-copy="#2F607A">
+                <span class="color-swatch__name">Atlantic 600</span>
+                <span>#2F607A</span>
+              </button>
+              <button class="color-swatch color-swatch--bronze" type="button" data-copy="#B59A68">
+                <span class="color-swatch__name">Bronze 500</span>
+                <span>#B59A68</span>
+              </button>
+              <button class="color-swatch color-swatch--ivory" type="button" data-copy="#F5F1E4">
+                <span class="color-swatch__name">Ivory 100</span>
+                <span>#F5F1E4</span>
+              </button>
+              <button class="color-swatch color-swatch--mist" type="button" data-copy="#EEF2F3">
+                <span class="color-swatch__name">Mist 100</span>
+                <span>#EEF2F3</span>
+              </button>
+            </div>
+            <p class="interaction-note" aria-live="polite">
+              Selecione uma cor para copiar o valor hexadecimal.
+            </p>
+          </div>
+
+          <div class="foundation-block typography-board">
+            <div class="block-heading block-heading--light">
+              <div>
+                <p class="eyebrow">02.2 / Tipografia</p>
+                <h3>Uma voz precisa e humana</h3>
+              </div>
+              <p>Escala fluida, peso controlado e contraste de tamanho em vez de excesso de estilos.</p>
+            </div>
+
+            <div class="type-row type-row--display">
+              <span>Display / 72–112</span>
+              <p>Estratégia que protege.</p>
+            </div>
+            <div class="type-row type-row--heading">
+              <span>Heading / 40–64</span>
+              <p>Decisões mais seguras para a empresa.</p>
+            </div>
+            <div class="type-row type-row--body">
+              <span>Body / 16–20</span>
+              <p>
+                Texto de leitura confortável para explicações, orientações e informações de apoio.
+              </p>
+            </div>
+            <div class="type-meta">
+              <div>
+                <span>Família</span>
+                <strong>System Sans</strong>
+              </div>
+              <div>
+                <span>Pesos</span>
+                <strong>400 / 500 / 600</strong>
+              </div>
+              <div>
+                <span>Entrelinha</span>
+                <strong>0.94 / 1.15 / 1.6</strong>
+              </div>
+              <div>
+                <span>Tracking</span>
+                <strong>-0.05em / +0.12em</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="foundation-grid">
+            <div class="foundation-block spacing-board">
+              <div class="block-heading">
+                <div>
+                  <p class="eyebrow eyebrow--dark">02.3 / Espaçamento</p>
+                  <h3>Ritmo de 4 pontos</h3>
+                </div>
+              </div>
+              <div class="spacing-list" aria-label="Escala de espaçamento">
+                <div><span style="--space-demo: 4px"></span><strong>04</strong></div>
+                <div><span style="--space-demo: 8px"></span><strong>08</strong></div>
+                <div><span style="--space-demo: 16px"></span><strong>16</strong></div>
+                <div><span style="--space-demo: 24px"></span><strong>24</strong></div>
+                <div><span style="--space-demo: 40px"></span><strong>40</strong></div>
+                <div><span style="--space-demo: 64px"></span><strong>64</strong></div>
+                <div><span style="--space-demo: 96px"></span><strong>96</strong></div>
+              </div>
+            </div>
+
+            <div class="foundation-block grid-board">
+              <div class="block-heading">
+                <div>
+                  <p class="eyebrow eyebrow--dark">02.4 / Grade</p>
+                  <h3>12 colunas fluidas</h3>
+                </div>
+              </div>
+              <div class="mini-grid" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <div class="grid-meta">
+                <span>Máx. 1280 px</span>
+                <span>Gutter 24–32 px</span>
+                <span>Margem 20–64 px</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="componentes" class="section">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="section-number">03 / Componentes</p>
+              <h2>Peças simples.<br />Comportamento consistente.</h2>
+            </div>
+            <p class="section-intro">
+              Elementos com estados claros, foco visível e escala adequada para mouse, teclado e
+              toque.
+            </p>
+          </div>
+
+          <div class="component-section">
+            <div class="component-label">
+              <span>03.1</span>
+              <h3>Ações</h3>
+            </div>
+            <div class="component-stage component-stage--split">
+              <div class="component-stage__light">
+                <a class="button button--primary" href="#padroes">
+                  Ação principal
+                  <span class="button-icon" aria-hidden="true">
+                    <svg viewBox="0 0 20 20">
+                      <path d="M4 10h11M11 6l4 4-4 4" />
+                    </svg>
+                  </span>
+                </a>
+                <a class="button button--outline" href="#padroes">Ação secundária</a>
+                <button class="button button--text" type="button">
+                  Ação textual
+                  <span class="button-icon" aria-hidden="true">
+                    <svg viewBox="0 0 20 20">
+                      <path d="M4 10h11M11 6l4 4-4 4" />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+              <div class="component-stage__dark">
+                <button class="button button--ivory" type="button">Ação sobre fundo escuro</button>
+                <button class="button button--ghost" type="button">Ação discreta</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-section">
+            <div class="component-label">
+              <span>03.2</span>
+              <h3>Etiquetas</h3>
+            </div>
+            <div class="component-stage badge-stage">
+              <span class="badge">Padrão</span>
+              <span class="badge badge--dark">Destaque</span>
+              <span class="badge badge--bronze">Especialidade</span>
+              <span class="badge badge--outline">Informativo</span>
+              <span class="status"><i></i> Disponível</span>
+            </div>
+          </div>
+
+          <div class="component-section">
+            <div class="component-label">
+              <span>03.3</span>
+              <h3>Campos</h3>
+            </div>
+            <div class="component-stage form-stage">
+              <label class="field">
+                <span>Rótulo do campo</span>
+                <input type="text" placeholder="Texto de exemplo" />
+                <small>Orientação curta para preenchimento.</small>
+              </label>
+              <label class="field">
+                <span>Seleção</span>
+                <select>
+                  <option>Escolha uma opção</option>
+                  <option>Opção de exemplo</option>
+                </select>
+              </label>
+              <label class="field field--wide">
+                <span>Mensagem</span>
+                <textarea rows="4" placeholder="Escreva uma descrição breve"></textarea>
+              </label>
+              <label class="checkbox field--wide">
+                <input type="checkbox" />
+                <span>Texto de consentimento ou confirmação.</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="component-section">
+            <div class="component-label">
+              <span>03.4</span>
+              <h3>Cartões</h3>
+            </div>
+            <div class="cards-stage">
+              <article class="service-card">
+                <div class="service-card__top">
+                  <span class="service-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5" />
+                    </svg>
+                  </span>
+                  <span>01</span>
+                </div>
+                <div>
+                  <h4>Título do serviço</h4>
+                  <p>Descrição concisa para apresentar a área de atuação.</p>
+                </div>
+                <a href="#padroes" aria-label="Ver padrão do cartão">
+                  Ver detalhe
+                  <svg viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M4 10h11M11 6l4 4-4 4" />
+                  </svg>
+                </a>
+              </article>
+
+              <article class="service-card service-card--featured">
+                <div class="service-card__top">
+                  <span class="service-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4 18h16M6 18V9l6-4 6 4v9M9 12h6M9 15h6" />
+                    </svg>
+                  </span>
+                  <span>02</span>
+                </div>
+                <div>
+                  <h4>Cartão em destaque</h4>
+                  <p>Variação para conteúdos prioritários ou de maior interesse.</p>
+                </div>
+                <a href="#padroes" aria-label="Ver padrão do cartão em destaque">
+                  Ver detalhe
+                  <svg viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M4 10h11M11 6l4 4-4 4" />
+                  </svg>
+                </a>
+              </article>
+
+              <article class="stat-card">
+                <p class="eyebrow eyebrow--dark">Indicador</p>
+                <strong>01:1</strong>
+                <span>Atendimento personalizado</span>
+              </article>
+            </div>
+          </div>
+
+          <div class="component-section">
+            <div class="component-label">
+              <span>03.5</span>
+              <h3>Expansíveis</h3>
+            </div>
+            <div class="component-stage accordion-stage">
+              <details open>
+                <summary>
+                  <span>Pergunta ou tópico de exemplo?</span>
+                  <i aria-hidden="true"></i>
+                </summary>
+                <p>Área reservada para uma resposta objetiva, legível e sem excesso de texto.</p>
+              </details>
+              <details>
+                <summary>
+                  <span>Como este componente se comporta?</span>
+                  <i aria-hidden="true"></i>
+                </summary>
+                <p>O elemento utiliza comportamento nativo, foco visível e expansão progressiva.</p>
+              </details>
+              <details>
+                <summary>
+                  <span>Qual a densidade recomendada?</span>
+                  <i aria-hidden="true"></i>
+                </summary>
+                <p>Priorizar respostas curtas e organizar temas extensos em grupos menores.</p>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="padroes" class="section section--navy">
+        <div class="container">
+          <div class="section-heading section-heading--light">
+            <div>
+              <p class="section-number">04 / Padrões</p>
+              <h2>Composições para<br />a futura landing page.</h2>
+            </div>
+            <p class="section-intro">
+              Estruturas de baixa fidelidade visual para validar ritmo, contraste e hierarquia antes
+              da definição da copy.
+            </p>
+          </div>
+
+          <div class="pattern-showcase">
+            <div class="pattern-meta">
+              <span>04.1 / Navegação</span>
+              <p>Barra discreta, CTA sempre identificável e menu compacto em telas menores.</p>
+            </div>
+            <div class="navigation-demo">
+              <img
+                src="logos/lima_ferreira_bancario_horizontal_ivory_sem_fundo.png"
+                alt=""
+              />
+              <div>
+                <span>Link</span>
+                <span>Link</span>
+                <span>Link</span>
+              </div>
+              <span class="mini-button">Ação</span>
+            </div>
+          </div>
+
+          <div class="pattern-showcase">
+            <div class="pattern-meta">
+              <span>04.2 / Hero</span>
+              <p>Mensagem curta, espaço negativo e geometria proprietária no lugar de clichês jurídicos.</p>
+            </div>
+            <div class="hero-demo">
+              <div class="hero-demo__grid" aria-hidden="true"></div>
+              <div class="hero-demo__content">
+                <span class="demo-line demo-line--small"></span>
+                <span class="demo-line demo-line--large"></span>
+                <span class="demo-line demo-line--medium"></span>
+                <span class="demo-line demo-line--body"></span>
+                <span class="demo-button"></span>
+              </div>
+              <div class="hero-demo__shape" aria-hidden="true">
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pattern-showcase">
+            <div class="pattern-meta">
+              <span>04.3 / Conteúdo</span>
+              <p>Blocos alternados evitam monotonia e permitem reduzir a densidade da página final.</p>
+            </div>
+            <div class="content-demo">
+              <div class="content-demo__intro">
+                <span class="demo-line demo-line--small"></span>
+                <span class="demo-line demo-line--large"></span>
+                <span class="demo-line demo-line--medium"></span>
+              </div>
+              <div class="content-demo__cards">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cta-pattern">
+            <div class="cta-pattern__grid" aria-hidden="true"></div>
+            <div>
+              <p class="eyebrow">04.4 / Conversão</p>
+              <h3>Título curto para a ação principal.</h3>
+              <p>Uma única mensagem de apoio e um caminho inequívoco para avançar.</p>
+            </div>
+            <a class="button button--ivory" href="#topo">
+              Rótulo do CTA
+              <span class="button-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20">
+                  <path d="M4 10h11M11 6l4 4-4 4" />
+                </svg>
+              </span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <img
+            src="logos/lima_ferreira_bancario_compacta_ivory_sem_fundo.png"
+            alt="Lima Ferreira Direito Bancário Empresarial"
+          />
+          <p>Design system / versão inicial</p>
+        </div>
+        <div class="footer-meta">
+          <span>Digital first</span>
+          <span>Responsivo</span>
+          <span>WCAG AA</span>
+        </div>
+        <a href="#topo" class="back-to-top">
+          Voltar ao topo
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M10 16V5M6 9l4-4 4 4" />
+          </svg>
+        </a>
+      </div>
+    </footer>
+
+    <div class="page-grid" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "project": "lima-ferreira-direito-bancario-editorial",
+  "visual_lock": "Contemporary Brazilian corporate architecture, exposed concrete, smoked glass, walnut wood, graphite metal, blue-hour exterior, warm tungsten interior practicals, deep navy and petrol blue palette, warm ivory highlights, restrained bronze accents, medium-low contrast, fine grain, realistic materials, premium editorial photography, no visible text or logos.",
+  "capture_lock": "High-resolution full-frame editorial photography, 35mm and 50mm lens family, f/2.8-f/4, 5000K white balance, 1/8 Black Pro-Mist, soft window key 45 degrees camera-left, warm practicals in background, negative fill camera-right, soft highlight roll-off.",
+  "assets": [
+    {"id": "01", "file": "hero-estrategia.webp", "ratio": "4:5", "role": "hero"},
+    {"id": "02", "file": "editorial-proposta-banco.webp", "ratio": "3:2", "role": "belief"},
+    {"id": "03", "file": "especialista-provisoria.webp", "ratio": "4:5", "role": "specialist placeholder"},
+    {"id": "04", "file": "card-parcelas-caixa.webp", "ratio": "4:3", "role": "situation card"},
+    {"id": "05", "file": "card-proposta-complexa.webp", "ratio": "4:3", "role": "situation card"},
+    {"id": "06", "file": "card-execucao.webp", "ratio": "4:3", "role": "situation card"},
+    {"id": "07", "file": "card-socios-expostos.webp", "ratio": "4:3", "role": "situation card"},
+    {"id": "08", "file": "card-divida-crescimento.webp", "ratio": "4:3", "role": "situation card"},
+    {"id": "09", "file": "servico-revisao-contratos.webp", "ratio": "4:3", "role": "service card"},
+    {"id": "10", "file": "servico-renegociacao.webp", "ratio": "4:3", "role": "service card"},
+    {"id": "11", "file": "servico-defesa-execucoes.webp", "ratio": "4:3", "role": "service card"},
+    {"id": "12", "file": "servico-garantias-socios.webp", "ratio": "4:3", "role": "service card"},
+    {"id": "13", "file": "servico-reestruturacao.webp", "ratio": "4:3", "role": "service card"},
+    {"id": "14", "file": "servico-protecao-patrimonial.webp", "ratio": "4:3", "role": "service card"}
+  ]
+}
