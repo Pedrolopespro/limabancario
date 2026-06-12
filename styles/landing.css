@@ -679,7 +679,7 @@ fieldset {
 .video-intro h2 {
   max-width: 21ch;
   margin: 0;
-  font-size: clamp(3rem, 4.8vw, 5.4rem);
+  font-size: clamp(3.1rem, 4.65vw, 3.35rem);
   font-weight: 400;
   letter-spacing: -0.06em;
   line-height: 0.98;
@@ -2514,7 +2514,6 @@ body.analysis-visible .mobile-cta {
   }
 
   .video-intro h2 {
-    font-size: clamp(2.65rem, 11vw, 4rem);
     line-height: 1;
   }
 
