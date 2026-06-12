@@ -14,6 +14,9 @@ const yearElement = document.querySelector("[data-current-year]");
 const analysisSection = document.querySelector("#analise");
 const strategyDiagram = document.querySelector("[data-strategy-diagram]");
 const heroSection = document.querySelector("#inicio");
+const videoPreview = document.querySelector("[data-video-preview]");
+const videoPlayButton = document.querySelector("[data-video-play]");
+const videoStatus = document.querySelector("[data-video-status]");
 
 let currentStep = 1;
 
@@ -105,6 +108,40 @@ const applyCnpjMask = (value) =>
     .replace(/\.(\d{3})(\d)/, ".$1/$2")
     .replace(/(\d{4})(\d)/, "$1-$2");
 
+const startVideoPreview = () => {
+  if (!videoPreview) return;
+
+  videoPreview.controls = false;
+  videoPreview.muted = true;
+  videoPreview.loop = true;
+  videoPlayButton?.removeAttribute("hidden");
+  if (videoStatus) videoStatus.textContent = "PREVIEW · SEM ÁUDIO";
+
+  const playPromise = videoPreview.play();
+  playPromise?.catch(() => {
+    // O poster e o botão continuam disponíveis quando o autoplay é bloqueado.
+  });
+};
+
+const playVideoWithAudio = async () => {
+  if (!videoPreview) return;
+
+  videoPreview.pause();
+  videoPreview.currentTime = 0;
+  videoPreview.loop = false;
+  videoPreview.muted = false;
+  videoPreview.controls = true;
+  videoPlayButton?.setAttribute("hidden", "");
+  if (videoStatus) videoStatus.textContent = "VÍDEO · COM ÁUDIO";
+
+  try {
+    await videoPreview.play();
+  } catch {
+    videoPreview.controls = false;
+    startVideoPreview();
+  }
+};
+
 menuToggle?.addEventListener("click", () => {
   const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
 
@@ -123,6 +160,13 @@ window.addEventListener("keydown", (event) => {
 
 window.addEventListener("scroll", updateHeader, { passive: true });
 updateHeader();
+
+videoPlayButton?.addEventListener("click", playVideoWithAudio);
+videoPreview?.addEventListener("ended", () => {
+  videoPreview.currentTime = 0;
+  startVideoPreview();
+});
+startVideoPreview();
 
 if (analysisSection && "IntersectionObserver" in window) {
   const analysisObserver = new IntersectionObserver(

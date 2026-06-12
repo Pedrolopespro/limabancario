@@ -139,18 +139,37 @@
 
         <div class="container video-frame">
           <video
-            controls
+            data-video-preview
+            autoplay
+            muted
+            loop
             playsinline
-            preload="none"
+            preload="metadata"
             poster="assets/editorial/images/dra-luana-video-poster.webp"
             aria-label="Apresentação da Dra. Luana sobre direito bancário empresarial"
           >
             <source src="assets/editorial/dra-luana-apresentacao.m4v" type="video/x-m4v" />
             Seu navegador não oferece suporte à reprodução de vídeo.
           </video>
+          <button
+            class="video-frame__play"
+            type="button"
+            data-video-play
+            aria-label="Assistir ao vídeo completo com áudio desde o início"
+          >
+            <span class="video-frame__play-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M9 6.75v10.5L17.25 12 9 6.75Z" />
+              </svg>
+            </span>
+            <span>
+              <strong>Assistir com áudio</strong>
+              <small>Reproduzir desde o início</small>
+            </span>
+          </button>
           <div class="video-frame__meta" aria-hidden="true">
             <span>DRA. LUANA</span>
-            <span>00:44</span>
+            <span data-video-status>PREVIEW · SEM ÁUDIO</span>
           </div>
         </div>
       </section>

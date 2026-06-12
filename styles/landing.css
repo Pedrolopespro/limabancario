@@ -700,6 +700,7 @@ fieldset {
 
 .video-frame::after {
   position: absolute;
+  z-index: 1;
   inset: 0;
   border: 1px solid rgba(245, 241, 228, 0.12);
   content: "";
@@ -711,6 +712,82 @@ fieldset {
   aspect-ratio: 16 / 9;
   background: var(--navy-950);
   object-fit: cover;
+}
+
+.video-frame__play {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-height: 4.75rem;
+  padding: 0.65rem 1.4rem 0.65rem 0.7rem;
+  border: 1px solid rgba(245, 241, 228, 0.3);
+  border-radius: 999px;
+  background: rgba(7, 24, 39, 0.86);
+  color: var(--ivory-100);
+  font: inherit;
+  text-align: left;
+  box-shadow: 0 1.25rem 3.5rem rgba(0, 0, 0, 0.32);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(12px);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease,
+    opacity 180ms ease;
+}
+
+.video-frame__play:hover {
+  border-color: rgba(245, 241, 228, 0.58);
+  background: rgba(7, 24, 39, 0.96);
+  transform: translate(-50%, -50%) scale(1.025);
+}
+
+.video-frame__play:focus-visible {
+  outline: 3px solid var(--bronze-300);
+  outline-offset: 4px;
+}
+
+.video-frame__play[hidden] {
+  display: none;
+}
+
+.video-frame__play-icon {
+  display: grid;
+  width: 3.35rem;
+  height: 3.35rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ivory-100);
+  color: var(--navy-950);
+}
+
+.video-frame__play-icon svg {
+  width: 1.35rem;
+  height: 1.35rem;
+  fill: currentColor;
+}
+
+.video-frame__play strong,
+.video-frame__play small {
+  display: block;
+}
+
+.video-frame__play strong {
+  font-size: var(--text-base);
+  line-height: 1.2;
+}
+
+.video-frame__play small {
+  margin-top: 0.2rem;
+  color: rgba(245, 241, 228, 0.68);
+  font-size: var(--text-xs);
+  line-height: 1.3;
 }
 
 .video-frame__meta {
@@ -2396,6 +2473,20 @@ body.analysis-visible .mobile-cta {
     top: 1rem;
     right: 1rem;
     left: 1rem;
+  }
+
+  .video-frame__play {
+    min-height: 3.75rem;
+    padding: 0.5rem 1rem 0.5rem 0.5rem;
+  }
+
+  .video-frame__play-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .video-frame__play small {
+    display: none;
   }
 
   .situation-card,
