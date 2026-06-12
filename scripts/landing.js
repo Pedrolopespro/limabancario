@@ -12,12 +12,16 @@ const successPanel = document.querySelector("[data-form-success]");
 const resetButton = document.querySelector("[data-form-reset]");
 const yearElement = document.querySelector("[data-current-year]");
 const analysisSection = document.querySelector("#analise");
-const strategyDiagram = document.querySelector("[data-strategy-diagram]");
+const specialistSection = document.querySelector("#especialista");
 const heroSection = document.querySelector("#inicio");
 const videoPreview = document.querySelector("[data-video-preview]");
 const videoPlayButton = document.querySelector("[data-video-play]");
 
 let currentStep = 1;
+
+if (specialistSection && analysisSection) {
+  specialistSection.insertAdjacentElement("afterend", analysisSection);
+}
 
 const closeMenu = () => {
   if (!menuToggle || !navigation) return;
@@ -185,19 +189,6 @@ if (heroSection && "IntersectionObserver" in window) {
   );
 
   heroObserver.observe(heroSection);
-}
-
-if (strategyDiagram && "IntersectionObserver" in window) {
-  const strategyObserver = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) strategyDiagram.classList.add("is-visible");
-    },
-    { threshold: 0.35 },
-  );
-
-  strategyObserver.observe(strategyDiagram);
-} else {
-  strategyDiagram?.classList.add("is-visible");
 }
 
 nextButton?.addEventListener("click", () => {
