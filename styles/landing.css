@@ -794,10 +794,7 @@ fieldset {
   position: absolute;
   z-index: 2;
   top: 1.5rem;
-  right: 1.5rem;
   left: 1.5rem;
-  display: flex;
-  justify-content: space-between;
   color: rgba(245, 241, 228, 0.72);
   font-size: var(--text-xs);
   letter-spacing: 0.12em;
@@ -2471,8 +2468,12 @@ body.analysis-visible .mobile-cta {
 
   .video-frame__meta {
     top: 1rem;
-    right: 1rem;
     left: 1rem;
+  }
+
+  .video-frame video {
+    aspect-ratio: 3 / 4;
+    object-position: center;
   }
 
   .video-frame__play {

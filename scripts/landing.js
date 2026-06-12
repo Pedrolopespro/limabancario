@@ -16,7 +16,6 @@ const strategyDiagram = document.querySelector("[data-strategy-diagram]");
 const heroSection = document.querySelector("#inicio");
 const videoPreview = document.querySelector("[data-video-preview]");
 const videoPlayButton = document.querySelector("[data-video-play]");
-const videoStatus = document.querySelector("[data-video-status]");
 
 let currentStep = 1;
 
@@ -115,7 +114,6 @@ const startVideoPreview = () => {
   videoPreview.muted = true;
   videoPreview.loop = true;
   videoPlayButton?.removeAttribute("hidden");
-  if (videoStatus) videoStatus.textContent = "PREVIEW · SEM ÁUDIO";
 
   const playPromise = videoPreview.play();
   playPromise?.catch(() => {
@@ -132,7 +130,6 @@ const playVideoWithAudio = async () => {
   videoPreview.muted = false;
   videoPreview.controls = true;
   videoPlayButton?.setAttribute("hidden", "");
-  if (videoStatus) videoStatus.textContent = "VÍDEO · COM ÁUDIO";
 
   try {
     await videoPreview.play();
