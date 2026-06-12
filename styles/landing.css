@@ -20,6 +20,21 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+h1,
+h2,
+h3 {
+  overflow-wrap: normal;
+  text-wrap: balance;
+}
+
+p,
+li,
+legend,
+summary,
+.button {
+  text-wrap: pretty;
+}
+
 body.menu-open {
   overflow: hidden;
 }
@@ -383,7 +398,7 @@ fieldset {
 .section-heading h2 {
   max-width: 17ch;
   margin: 1.2rem 0 0;
-  font-size: var(--text-2xl);
+  font-size: var(--text-section-title);
   font-weight: 400;
   letter-spacing: -0.055em;
   line-height: 1;
@@ -474,7 +489,7 @@ fieldset {
 .hero h1 {
   max-width: 14ch;
   margin: 1.25rem 0 1.75rem;
-  font-size: clamp(3.1rem, 4.65vw, 3.35rem);
+  font-size: var(--text-display);
   font-weight: 400;
   letter-spacing: -0.065em;
   line-height: 0.92;
@@ -677,9 +692,9 @@ fieldset {
 }
 
 .video-intro h2 {
-  max-width: 21ch;
+  max-width: 19ch;
   margin: 0;
-  font-size: clamp(3.1rem, 4.65vw, 3.35rem);
+  font-size: var(--text-display);
   font-weight: 400;
   letter-spacing: -0.06em;
   line-height: 0.98;
@@ -915,7 +930,7 @@ fieldset {
 .situation-card h3 {
   max-width: 15rem;
   margin: auto 0 0.65rem;
-  font-size: var(--text-xl);
+  font-size: var(--text-card-title);
   font-weight: 500;
   letter-spacing: -0.04em;
   line-height: 1.08;
@@ -957,7 +972,7 @@ fieldset {
 .situation-cta p {
   max-width: 12ch;
   margin: 0 0 1.5rem;
-  font-size: var(--text-xl);
+  font-size: var(--text-card-title);
   letter-spacing: -0.04em;
   line-height: 1.08;
 }
@@ -1022,7 +1037,7 @@ fieldset {
 
 .belief-content h2 {
   margin: 1.5rem 0;
-  font-size: var(--text-2xl);
+  font-size: var(--text-section-title);
   font-weight: 400;
   letter-spacing: -0.055em;
   line-height: 1;
@@ -1116,7 +1131,7 @@ fieldset {
 .service-card h3 {
   max-width: 16ch;
   margin: 0;
-  font-size: var(--text-xl);
+  font-size: var(--text-card-title);
   font-weight: 500;
   letter-spacing: -0.04em;
   line-height: 1.08;
@@ -1185,7 +1200,7 @@ fieldset {
 
 .method-intro h2 {
   margin: 1.5rem 0;
-  font-size: var(--text-2xl);
+  font-size: var(--text-section-title);
   font-weight: 400;
   letter-spacing: -0.055em;
   line-height: 1;
@@ -1232,7 +1247,7 @@ fieldset {
 
 .method-steps h3 {
   margin: 0;
-  font-size: var(--text-xl);
+  font-size: var(--text-card-title);
   font-weight: 500;
   letter-spacing: -0.04em;
 }
@@ -1540,7 +1555,7 @@ fieldset {
 .specialist-copy h2 {
   max-width: 13ch;
   margin: 1.3rem 0 1.5rem;
-  font-size: var(--text-2xl);
+  font-size: var(--text-section-title);
   font-weight: 400;
   letter-spacing: -0.055em;
   line-height: 1;
@@ -1646,7 +1661,7 @@ fieldset {
 
 .faq-intro h2 {
   margin: 1.25rem 0;
-  font-size: var(--text-2xl);
+  font-size: var(--text-section-title);
   font-weight: 400;
   letter-spacing: -0.055em;
   line-height: 1;
@@ -1749,7 +1764,7 @@ fieldset {
 
 .analysis-copy h2 {
   margin: 1.3rem 0 1.5rem;
-  font-size: var(--text-2xl);
+  font-size: var(--text-section-title);
   font-weight: 400;
   letter-spacing: -0.055em;
   line-height: 1;
@@ -1904,7 +1919,7 @@ fieldset {
 .form-step__heading h3 {
   max-width: 18ch;
   margin: 0;
-  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-size: var(--text-section-title);
   font-weight: 400;
   letter-spacing: -0.05em;
   line-height: 1;
@@ -2489,6 +2504,22 @@ body.analysis-visible .mobile-cta {
     gap: 1.5rem;
   }
 
+  .section-heading h2,
+  .pain-section .section-heading h2,
+  .specialist-copy h2,
+  .faq-intro h2,
+  .analysis-copy h2,
+  .form-step__heading h3 {
+    max-width: 100%;
+  }
+
+  .hero h1,
+  .video-intro h2 {
+    max-width: 100%;
+    letter-spacing: -0.055em;
+    line-height: 1;
+  }
+
   .hero-copy .eyebrow {
     margin-top: 3rem;
   }
@@ -2511,14 +2542,6 @@ body.analysis-visible .mobile-cta {
 
   .video-intro .section-number {
     margin-bottom: 2rem;
-  }
-
-  .video-intro h2 {
-    line-height: 1;
-  }
-
-  .video-intro h2 br {
-    display: none;
   }
 
   .video-intro > p:last-child {
@@ -2572,6 +2595,10 @@ body.analysis-visible .mobile-cta {
 
   .method-layout {
     gap: 3rem;
+  }
+
+  .method-intro h2 {
+    max-width: 100%;
   }
 
   .method-steps li {
@@ -2632,6 +2659,12 @@ body.analysis-visible .mobile-cta {
     grid-column: auto;
   }
 
+  .option-card span,
+  .field input,
+  .field textarea {
+    font-size: var(--text-base);
+  }
+
   .footer-main {
     grid-template-columns: 1fr;
   }
@@ -2670,6 +2703,13 @@ body.analysis-visible .mobile-cta {
 
   .form-back {
     margin-right: 0;
+  }
+}
+
+@media (max-width: 22rem) {
+  .hero h1,
+  .video-intro h2 {
+    font-size: 2.25rem;
   }
 }
 

@@ -45,6 +45,9 @@
   --text-xl: clamp(1.5rem, 2vw, 2rem);
   --text-2xl: clamp(2.25rem, 4.2vw, 4rem);
   --text-3xl: clamp(3.25rem, 7vw, 7rem);
+  --text-display: clamp(2.5rem, 9vw, 3.35rem);
+  --text-section-title: var(--text-2xl);
+  --text-card-title: var(--text-xl);
 
   /* Spacing */
   --space-1: 0.25rem;
