@@ -11,8 +11,8 @@
     <title>Advogado Bancário Empresarial | Lima Ferreira Advogados</title>
     <link rel="icon" href="logos/lima_ferreira_bancario_compacta_ivory_sem_fundo.png" />
     <link rel="stylesheet" href="styles/tokens.css?v=20260612-mobile-type-system" />
-    <link rel="stylesheet" href="styles/landing.css?v=20260612-light-cards" />
-    <script src="scripts/landing.js" defer></script>
+    <link rel="stylesheet" href="styles/landing.css?v=20260613-conversational-form" />
+    <script src="scripts/landing.js?v=20260613-conversational-form" defer></script>
   </head>
 
   <body>
@@ -616,32 +616,31 @@
               <div class="form-progress__bar" aria-hidden="true">
                 <span data-progress-bar></span>
               </div>
-              <ol>
-                <li class="is-active" data-step-indicator="1">
-                  <span>01</span>
-                  <p>Situação</p>
-                </li>
-                <li data-step-indicator="2">
-                  <span>02</span>
-                  <p>Empresa</p>
-                </li>
-                <li data-step-indicator="3">
-                  <span>03</span>
-                  <p>Contato</p>
-                </li>
-              </ol>
+              <div class="form-progress__meta">
+                <p>
+                  Pergunta <strong data-progress-current>01</strong> de
+                  <span data-progress-total>11</span>
+                </p>
+                <span data-progress-section>Situação</span>
+              </div>
             </div>
 
             <form id="analysis-form" novalidate>
-              <div class="form-step is-active" data-form-step="1">
+              <div
+                class="form-question is-active"
+                data-form-question
+                data-question-section="Situação"
+              >
                 <div class="form-step__heading">
-                  <p>Etapa 1 de 3</p>
-                  <h3 tabindex="-1">Vamos mapear o cenário atual.</h3>
-                  <span>Três respostas ajudam a direcionar o início da análise.</span>
+                  <p>Primeiro, vamos entender o cenário</p>
+                  <h3 id="question-debt" tabindex="-1">
+                    Qual é o valor aproximado da dívida bancária?
+                  </h3>
+                  <span>Não precisa ser um número exato.</span>
                 </div>
 
-                <fieldset class="option-group">
-                  <legend>Valor aproximado da dívida bancária</legend>
+                <fieldset class="option-group" aria-labelledby="question-debt">
+                  <legend class="sr-only">Valor aproximado da dívida bancária</legend>
                   <div class="option-grid option-grid--two">
                     <label class="option-card">
                       <input type="radio" name="debt_amount" value="Até R$ 50 mil" required />
@@ -669,152 +668,275 @@
                     </label>
                   </div>
                 </fieldset>
-
-                <div class="form-question-grid">
-                  <fieldset class="option-group">
-                    <legend>Existe processo judicial?</legend>
-                    <div class="option-grid">
-                      <label class="option-card">
-                        <input type="radio" name="lawsuit" value="Sim" required />
-                        <span>Sim</span>
-                      </label>
-                      <label class="option-card">
-                        <input type="radio" name="lawsuit" value="Não" />
-                        <span>Não</span>
-                      </label>
-                      <label class="option-card">
-                        <input type="radio" name="lawsuit" value="Não sei" />
-                        <span>Não sei</span>
-                      </label>
-                    </div>
-                  </fieldset>
-
-                  <fieldset class="option-group">
-                    <legend>Existe bloqueio ou penhora?</legend>
-                    <div class="option-grid">
-                      <label class="option-card">
-                        <input type="radio" name="asset_block" value="Sim" required />
-                        <span>Sim</span>
-                      </label>
-                      <label class="option-card">
-                        <input type="radio" name="asset_block" value="Não" />
-                        <span>Não</span>
-                      </label>
-                      <label class="option-card">
-                        <input type="radio" name="asset_block" value="Existe risco" />
-                        <span>Existe risco</span>
-                      </label>
-                      <label class="option-card">
-                        <input type="radio" name="asset_block" value="Não sei" />
-                        <span>Não sei</span>
-                      </label>
-                    </div>
-                  </fieldset>
-                </div>
               </div>
 
-              <div class="form-step" data-form-step="2" hidden>
+              <div
+                class="form-question"
+                data-form-question
+                data-question-section="Situação"
+                hidden
+              >
                 <div class="form-step__heading">
-                  <p>Etapa 2 de 3</p>
-                  <h3 tabindex="-1">Agora, um pouco sobre a empresa.</h3>
-                  <span>Esses dados ajudam a contextualizar a situação informada.</span>
+                  <p>Situação atual</p>
+                  <h3 id="question-lawsuit" tabindex="-1">Já existe algum processo judicial?</h3>
+                  <span>Considere ações de cobrança ou execução relacionadas à dívida.</span>
                 </div>
 
-                <div class="field-grid">
-                  <label class="field field--wide">
-                    <span>Nome da empresa</span>
-                    <input
-                      type="text"
-                      name="company"
-                      autocomplete="organization"
-                      placeholder="Razão social ou nome fantasia"
-                      required
-                    />
-                  </label>
-                  <label class="field">
-                    <span>CNPJ</span>
-                    <input
-                      type="text"
-                      name="cnpj"
-                      inputmode="numeric"
-                      autocomplete="off"
-                      placeholder="00.000.000/0000-00"
-                      data-mask="cnpj"
-                      pattern="\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}"
-                      title="Informe um CNPJ no formato 00.000.000/0000-00"
-                      required
-                    />
-                  </label>
-                  <label class="field">
-                    <span>Cidade e estado</span>
-                    <input
-                      type="text"
-                      name="location"
-                      autocomplete="address-level2"
-                      placeholder="Ex.: São Paulo, SP"
-                      required
-                    />
-                  </label>
-                  <label class="field field--wide">
-                    <span>Observação sobre o caso <small>Opcional</small></span>
-                    <textarea
-                      name="case_note"
-                      rows="4"
-                      placeholder="Conte brevemente o que mais preocupa neste momento"
-                    ></textarea>
-                  </label>
-                </div>
+                <fieldset class="option-group" aria-labelledby="question-lawsuit">
+                  <legend class="sr-only">Existe processo judicial?</legend>
+                  <div class="option-grid">
+                    <label class="option-card">
+                      <input type="radio" name="lawsuit" value="Sim" required />
+                      <span>Sim</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="radio" name="lawsuit" value="Não" />
+                      <span>Não</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="radio" name="lawsuit" value="Não sei" />
+                      <span>Não sei</span>
+                    </label>
+                  </div>
+                </fieldset>
               </div>
 
-              <div class="form-step" data-form-step="3" hidden>
+              <div
+                class="form-question"
+                data-form-question
+                data-question-section="Situação"
+                hidden
+              >
                 <div class="form-step__heading">
-                  <p>Etapa 3 de 3</p>
-                  <h3 tabindex="-1">Para onde a equipe deve retornar?</h3>
-                  <span>Preencha seus dados para receber o contato da equipe.</span>
+                  <p>Risco imediato</p>
+                  <h3 id="question-block" tabindex="-1">
+                    Existe bloqueio, penhora ou risco imediato?
+                  </h3>
+                  <span>Essa informação ajuda a equipe a identificar a urgência do caso.</span>
                 </div>
 
-                <div class="field-grid">
-                  <label class="field field--wide">
-                    <span>Nome completo</span>
-                    <input
-                      type="text"
-                      name="name"
-                      autocomplete="name"
-                      placeholder="Como devemos chamar você?"
-                      required
-                    />
-                  </label>
-                  <label class="field">
-                    <span>WhatsApp</span>
-                    <input
-                      type="tel"
-                      name="phone"
-                      inputmode="tel"
-                      autocomplete="tel"
-                      placeholder="(00) 00000-0000"
-                      data-mask="phone"
-                      pattern="\(\d{2}\) \d{4,5}-\d{4}"
-                      title="Informe um telefone com DDD"
-                      required
-                    />
-                  </label>
-                  <label class="field">
-                    <span>E-mail</span>
-                    <input
-                      type="email"
-                      name="email"
-                      autocomplete="email"
-                      placeholder="voce@empresa.com.br"
-                      required
-                    />
-                  </label>
+                <fieldset class="option-group" aria-labelledby="question-block">
+                  <legend class="sr-only">Existe bloqueio ou penhora?</legend>
+                  <div class="option-grid">
+                    <label class="option-card">
+                      <input type="radio" name="asset_block" value="Sim" required />
+                      <span>Sim</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="radio" name="asset_block" value="Não" />
+                      <span>Não</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="radio" name="asset_block" value="Existe risco" />
+                      <span>Existe risco</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="radio" name="asset_block" value="Não sei" />
+                      <span>Não sei</span>
+                    </label>
+                  </div>
+                </fieldset>
+              </div>
+
+              <div
+                class="form-question"
+                data-form-question
+                data-question-section="Empresa"
+                hidden
+              >
+                <div class="form-step__heading">
+                  <p>Agora, sobre a empresa</p>
+                  <h3 id="question-company" tabindex="-1">Qual é o nome da empresa?</h3>
+                  <span>Informe a razão social ou o nome fantasia.</span>
                 </div>
 
-                <label class="consent">
+                <label class="field field--wide">
+                  <span class="sr-only">Nome da empresa</span>
+                  <input
+                    type="text"
+                    name="company"
+                    autocomplete="organization"
+                    placeholder="Digite o nome da empresa"
+                    aria-labelledby="question-company"
+                    required
+                  />
+                </label>
+              </div>
+
+              <div
+                class="form-question"
+                data-form-question
+                data-question-section="Empresa"
+                hidden
+              >
+                <div class="form-step__heading">
+                  <p>Identificação</p>
+                  <h3 id="question-cnpj" tabindex="-1">Qual é o CNPJ da empresa?</h3>
+                  <span>Usaremos essa informação apenas para a avaliação inicial.</span>
+                </div>
+
+                <label class="field field--wide">
+                  <span class="sr-only">CNPJ</span>
+                  <input
+                    type="text"
+                    name="cnpj"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    placeholder="00.000.000/0000-00"
+                    aria-labelledby="question-cnpj"
+                    data-mask="cnpj"
+                    pattern="\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}"
+                    title="Informe um CNPJ no formato 00.000.000/0000-00"
+                    required
+                  />
+                </label>
+              </div>
+
+              <div
+                class="form-question"
+                data-form-question
+                data-question-section="Empresa"
+                hidden
+              >
+                <div class="form-step__heading">
+                  <p>Localização</p>
+                  <h3 id="question-location" tabindex="-1">Em qual cidade a empresa está?</h3>
+                  <span>Informe também o estado.</span>
+                </div>
+
+                <label class="field field--wide">
+                  <span class="sr-only">Cidade e estado</span>
+                  <input
+                    type="text"
+                    name="location"
+                    autocomplete="address-level2"
+                    placeholder="Ex.: São Paulo, SP"
+                    aria-labelledby="question-location"
+                    required
+                  />
+                </label>
+              </div>
+
+              <div
+                class="form-question"
+                data-form-question
+                data-question-section="Empresa"
+                data-question-optional
+                hidden
+              >
+                <div class="form-step__heading">
+                  <p>Contexto do caso · Opcional</p>
+                  <h3 id="question-note" tabindex="-1">O que mais preocupa você neste momento?</h3>
+                  <span>Você pode responder brevemente ou seguir sem preencher.</span>
+                </div>
+
+                <label class="field field--wide">
+                  <span class="sr-only">Observação sobre o caso</span>
+                  <textarea
+                    name="case_note"
+                    rows="5"
+                    placeholder="Conte os pontos mais importantes do caso"
+                    aria-labelledby="question-note"
+                  ></textarea>
+                </label>
+              </div>
+
+              <div
+                class="form-question"
+                data-form-question
+                data-question-section="Contato"
+                hidden
+              >
+                <div class="form-step__heading">
+                  <p>Estamos quase lá</p>
+                  <h3 id="question-name" tabindex="-1">Como devemos chamar você?</h3>
+                  <span>Informe seu nome completo.</span>
+                </div>
+
+                <label class="field field--wide">
+                  <span class="sr-only">Nome completo</span>
+                  <input
+                    type="text"
+                    name="name"
+                    autocomplete="name"
+                    placeholder="Digite seu nome completo"
+                    aria-labelledby="question-name"
+                    required
+                  />
+                </label>
+              </div>
+
+              <div
+                class="form-question"
+                data-form-question
+                data-question-section="Contato"
+                hidden
+              >
+                <div class="form-step__heading">
+                  <p>Canal de retorno</p>
+                  <h3 id="question-phone" tabindex="-1">Qual é o seu WhatsApp?</h3>
+                  <span>Inclua o DDD para que a equipe possa retornar.</span>
+                </div>
+
+                <label class="field field--wide">
+                  <span class="sr-only">WhatsApp</span>
+                  <input
+                    type="tel"
+                    name="phone"
+                    inputmode="tel"
+                    autocomplete="tel"
+                    placeholder="(00) 00000-0000"
+                    aria-labelledby="question-phone"
+                    data-mask="phone"
+                    pattern="\(\d{2}\) \d{4,5}-\d{4}"
+                    title="Informe um telefone com DDD"
+                    required
+                  />
+                </label>
+              </div>
+
+              <div
+                class="form-question"
+                data-form-question
+                data-question-section="Contato"
+                hidden
+              >
+                <div class="form-step__heading">
+                  <p>Outro canal de contato</p>
+                  <h3 id="question-email" tabindex="-1">Qual é o seu melhor e-mail?</h3>
+                  <span>Assim a equipe também pode enviar orientações e documentos.</span>
+                </div>
+
+                <label class="field field--wide">
+                  <span class="sr-only">E-mail</span>
+                  <input
+                    type="email"
+                    name="email"
+                    autocomplete="email"
+                    placeholder="voce@empresa.com.br"
+                    aria-labelledby="question-email"
+                    required
+                  />
+                </label>
+              </div>
+
+              <div
+                class="form-question"
+                data-form-question
+                data-question-section="Confirmação"
+                hidden
+              >
+                <div class="form-step__heading">
+                  <p>Última pergunta</p>
+                  <h3 id="question-consent" tabindex="-1">Podemos entrar em contato com você?</h3>
+                  <span>Seus dados serão usados apenas para avaliação inicial e retorno da equipe.</span>
+                </div>
+
+                <label class="consent consent--card">
                   <input type="checkbox" name="consent" required />
                   <span>
-                    Autorizo o uso dessas informações para avaliação inicial e contato da equipe,
-                    conforme a política de privacidade.
+                    Sim, autorizo o uso dessas informações para avaliação inicial e contato da
+                    equipe, conforme a política de privacidade.
                   </span>
                 </label>
               </div>
@@ -829,7 +951,7 @@
                   Voltar
                 </button>
                 <button class="button button--primary form-next" type="button" data-form-next>
-                  Próximo
+                  <span data-form-next-label>Continuar</span>
                   <span class="button-icon" aria-hidden="true">
                     <svg viewBox="0 0 20 20">
                       <path d="M4 10h11M11 6l4 4-4 4" />
@@ -845,6 +967,10 @@
                   </span>
                 </button>
               </div>
+
+              <p class="form-keyboard-hint" aria-hidden="true">
+                Pressione <kbd>Enter</kbd> para continuar
+              </p>
 
               <p class="form-disclaimer">
                 Cada caso depende da análise dos documentos. O envio das informações não garante

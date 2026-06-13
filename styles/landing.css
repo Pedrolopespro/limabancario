@@ -1785,6 +1785,7 @@ fieldset {
   border-radius: var(--radius-sm);
   background: var(--white);
   color: var(--ink);
+  scroll-margin-top: 6.5rem;
   box-shadow: var(--shadow-lg);
 }
 
@@ -1803,73 +1804,43 @@ fieldset {
 
 .form-progress__bar span {
   display: block;
-  width: 33.333%;
+  width: 9.09%;
   height: 100%;
   background: var(--navy-950);
   transition: width var(--transition-slow);
 }
 
-.form-progress ol {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.form-progress li {
+.form-progress__meta {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  color: #9aa3a8;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--slate-700);
   font-size: var(--text-xs);
   font-weight: 600;
-  transition: color var(--transition-fast);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.form-progress li:nth-child(2) {
-  justify-content: center;
-}
-
-.form-progress li:last-child {
-  justify-content: flex-end;
-}
-
-.form-progress li span {
-  display: grid;
-  width: 2rem;
-  height: 2rem;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  font-size: 0.75rem;
-  place-items: center;
-}
-
-.form-progress li p {
+.form-progress__meta p {
   margin: 0;
 }
 
-.form-progress li.is-active,
-.form-progress li.is-complete {
+.form-progress__meta strong {
   color: var(--navy-950);
+  font-size: var(--text-sm);
 }
 
-.form-progress li.is-active span {
-  background: var(--navy-950);
-  box-shadow: 0 0 0 3px rgba(7, 24, 39, 0.12);
-  color: var(--ivory-100);
-}
-
-.form-progress li.is-complete span {
-  background: var(--navy-950);
-  color: var(--ivory-100);
+.form-progress__meta > span {
+  color: var(--atlantic-600);
 }
 
 #analysis-form {
   padding: clamp(2.5rem, 5vw, 4rem);
 }
 
-.form-step {
+.form-question {
+  min-height: clamp(22rem, 32vw, 28rem);
   animation: formStepIn 350ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
@@ -1885,7 +1856,7 @@ fieldset {
 }
 
 .form-step__heading {
-  margin-bottom: 3rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
 .form-step__heading > p {
@@ -1898,7 +1869,7 @@ fieldset {
 }
 
 .form-step__heading h3 {
-  max-width: 18ch;
+  max-width: 20ch;
   margin: 0;
   font-size: var(--text-section-title);
   font-weight: 400;
@@ -1917,11 +1888,6 @@ fieldset {
   color: var(--color-text-muted);
   font-size: var(--text-sm);
   line-height: 1.55;
-}
-
-.option-group + .option-group,
-.form-question-grid {
-  margin-top: 2.5rem;
 }
 
 .option-group legend {
@@ -1956,7 +1922,7 @@ fieldset {
 
 .option-card span {
   display: flex;
-  min-height: 4rem;
+  min-height: 4.5rem;
   align-items: center;
   padding: 1rem 1.25rem;
   border: 1px solid var(--color-border);
@@ -1986,14 +1952,7 @@ fieldset {
   outline-offset: 2px;
 }
 
-.form-question-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
-  gap: 2rem;
-}
-
-.form-question-grid .option-card:last-child:nth-child(odd) {
+.option-grid .option-card:last-child:nth-child(odd) {
   grid-column: 1 / -1;
 }
 
@@ -2038,14 +1997,19 @@ fieldset {
 }
 
 .field input {
-  min-height: 4rem;
+  min-height: 5rem;
   padding-inline: 1.25rem;
 }
 
 .field textarea {
-  min-height: 10rem;
+  min-height: 12rem;
   padding: 1.15rem 1.25rem;
   resize: vertical;
+}
+
+#analysis-form .field input,
+#analysis-form .field textarea {
+  font-size: var(--text-lg);
 }
 
 .field input:focus,
@@ -2082,6 +2046,30 @@ fieldset {
   accent-color: var(--navy-950);
 }
 
+.consent--card {
+  min-height: 6rem;
+  align-items: center;
+  margin-top: 0;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xs);
+  background: var(--mist-100);
+  color: var(--slate-800);
+  font-size: var(--text-base);
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.consent--card:hover {
+  border-color: var(--atlantic-600);
+}
+
+.consent--card:has(input:checked) {
+  border-color: var(--navy-950);
+  background: rgba(47, 96, 122, 0.08);
+}
+
 .form-actions {
   display: flex;
   align-items: center;
@@ -2100,6 +2088,23 @@ fieldset {
 
 .form-back {
   margin-right: auto;
+}
+
+.form-keyboard-hint {
+  margin: 1rem 0 0;
+  color: #828d93;
+  font-size: var(--text-xs);
+  text-align: right;
+}
+
+.form-keyboard-hint kbd {
+  padding: 0.15rem 0.4rem;
+  border: 1px solid var(--color-border);
+  border-bottom-width: 2px;
+  border-radius: 0.25rem;
+  background: var(--mist-100);
+  color: var(--slate-800);
+  font: inherit;
 }
 
 .form-disclaimer {
@@ -2619,19 +2624,22 @@ body.analysis-visible .mobile-cta {
     text-align: left;
   }
 
-  .form-progress li p {
-    display: none;
+  .form-progress {
+    padding: 1.25rem 1.5rem;
   }
 
-  .form-progress li:nth-child(2) {
-    justify-content: center;
+  #analysis-form {
+    padding: 2rem 1.5rem;
   }
 
-  .form-progress li:last-child {
-    justify-content: flex-end;
+  .form-question {
+    min-height: 24rem;
   }
 
-  .form-question-grid,
+  .form-step__heading h3 {
+    font-size: clamp(2rem, 9vw, 2.6rem);
+  }
+
   .field-grid {
     grid-template-columns: 1fr;
   }
@@ -2644,6 +2652,10 @@ body.analysis-visible .mobile-cta {
   .field input,
   .field textarea {
     font-size: var(--text-base);
+  }
+
+  .form-keyboard-hint {
+    display: none;
   }
 
   .footer-main {
@@ -2672,6 +2684,10 @@ body.analysis-visible .mobile-cta {
   .option-grid,
   .option-grid--two {
     grid-template-columns: 1fr;
+  }
+
+  .option-grid .option-card:last-child:nth-child(odd) {
+    grid-column: auto;
   }
 
   .form-actions {

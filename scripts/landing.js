@@ -2,9 +2,12 @@ const header = document.querySelector("[data-header]");
 const menuToggle = document.querySelector(".menu-toggle");
 const navigation = document.querySelector(".primary-navigation");
 const form = document.querySelector("#analysis-form");
-const formSteps = [...document.querySelectorAll("[data-form-step]")];
-const stepIndicators = [...document.querySelectorAll("[data-step-indicator]")];
+const formShell = document.querySelector(".form-shell");
+const formQuestions = [...document.querySelectorAll("[data-form-question]")];
 const progressBar = document.querySelector("[data-progress-bar]");
+const progressCurrent = document.querySelector("[data-progress-current]");
+const progressTotal = document.querySelector("[data-progress-total]");
+const progressSection = document.querySelector("[data-progress-section]");
 const nextButton = document.querySelector("[data-form-next]");
 const backButton = document.querySelector("[data-form-back]");
 const submitButton = document.querySelector("[data-form-submit]");
@@ -17,7 +20,8 @@ const heroSection = document.querySelector("#inicio");
 const videoPreview = document.querySelector("[data-video-preview]");
 const videoPlayButton = document.querySelector("[data-video-play]");
 
-let currentStep = 1;
+let currentQuestion = 0;
+let choiceAdvanceTimer;
 
 if (specialistSection && analysisSection) {
   specialistSection.insertAdjacentElement("afterend", analysisSection);
@@ -35,13 +39,13 @@ const updateHeader = () => {
   header?.classList.toggle("is-scrolled", window.scrollY > 32);
 };
 
-const getStepFields = (step) => {
-  const panel = formSteps.find((item) => Number(item.dataset.formStep) === step);
+const getQuestionFields = (questionIndex) => {
+  const panel = formQuestions[questionIndex];
   return panel ? [...panel.querySelectorAll("input, textarea, select")] : [];
 };
 
-const validateStep = (step) => {
-  const fields = getStepFields(step);
+const validateQuestion = (questionIndex) => {
+  const fields = getQuestionFields(questionIndex);
 
   for (const field of fields) {
     if (!field.checkValidity()) {
@@ -53,39 +57,49 @@ const validateStep = (step) => {
   return true;
 };
 
-const updateFormStep = (step) => {
-  currentStep = step;
+const updateFormQuestion = (questionIndex) => {
+  currentQuestion = questionIndex;
+  window.clearTimeout(choiceAdvanceTimer);
 
-  formSteps.forEach((panel) => {
-    const panelStep = Number(panel.dataset.formStep);
-    const isActive = panelStep === currentStep;
+  formQuestions.forEach((panel, index) => {
+    const isActive = index === currentQuestion;
 
     panel.hidden = !isActive;
     panel.classList.toggle("is-active", isActive);
   });
 
-  stepIndicators.forEach((indicator) => {
-    const indicatorStep = Number(indicator.dataset.stepIndicator);
-    const isActive = indicatorStep === currentStep;
+  const activeQuestion = formQuestions[currentQuestion];
+  const isLastQuestion = currentQuestion === formQuestions.length - 1;
+  const displayQuestion = String(currentQuestion + 1).padStart(2, "0");
 
-    indicator.classList.toggle("is-active", isActive);
-    indicator.classList.toggle("is-complete", indicatorStep < currentStep);
-    if (isActive) {
-      indicator.setAttribute("aria-current", "step");
-    } else {
-      indicator.removeAttribute("aria-current");
-    }
+  if (progressBar) {
+    progressBar.style.width = `${((currentQuestion + 1) / formQuestions.length) * 100}%`;
+  }
+  if (progressCurrent) progressCurrent.textContent = displayQuestion;
+  if (progressTotal) progressTotal.textContent = String(formQuestions.length).padStart(2, "0");
+  if (progressSection) {
+    progressSection.textContent = activeQuestion?.dataset.questionSection || "Análise";
+  }
+  if (backButton) backButton.hidden = currentQuestion === 0;
+  if (nextButton) nextButton.hidden = isLastQuestion;
+  if (submitButton) submitButton.hidden = !isLastQuestion;
+
+  const activeHeading = activeQuestion?.querySelector("h3");
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  window.requestAnimationFrame(() => {
+    activeHeading?.focus({ preventScroll: true });
+    formShell?.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
   });
+};
 
-  if (progressBar) progressBar.style.width = `${(currentStep / formSteps.length) * 100}%`;
-  if (backButton) backButton.hidden = currentStep === 1;
-  if (nextButton) nextButton.hidden = currentStep === formSteps.length;
-  if (submitButton) submitButton.hidden = currentStep !== formSteps.length;
+const advanceFormQuestion = () => {
+  if (!validateQuestion(currentQuestion)) return;
 
-  const activeHeading = formSteps
-    .find((panel) => Number(panel.dataset.formStep) === currentStep)
-    ?.querySelector("h3");
-  activeHeading?.focus({ preventScroll: true });
+  updateFormQuestion(Math.min(currentQuestion + 1, formQuestions.length - 1));
 };
 
 const applyPhoneMask = (value) => {
@@ -192,12 +206,28 @@ if (heroSection && "IntersectionObserver" in window) {
 }
 
 nextButton?.addEventListener("click", () => {
-  if (!validateStep(currentStep)) return;
-  updateFormStep(Math.min(currentStep + 1, formSteps.length));
+  advanceFormQuestion();
 });
 
 backButton?.addEventListener("click", () => {
-  updateFormStep(Math.max(currentStep - 1, 1));
+  updateFormQuestion(Math.max(currentQuestion - 1, 0));
+});
+
+form?.querySelectorAll('input[type="radio"]').forEach((field) => {
+  field.addEventListener("change", () => {
+    choiceAdvanceTimer = window.setTimeout(() => {
+      const activeQuestion = formQuestions[currentQuestion];
+      if (activeQuestion?.contains(field) && field.checked) advanceFormQuestion();
+    }, 280);
+  });
+});
+
+form?.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter" || event.shiftKey || event.target instanceof HTMLTextAreaElement) return;
+  if (currentQuestion === formQuestions.length - 1) return;
+
+  event.preventDefault();
+  advanceFormQuestion();
 });
 
 document.querySelectorAll("[data-mask]").forEach((field) => {
@@ -210,7 +240,7 @@ document.querySelectorAll("[data-mask]").forEach((field) => {
 form?.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  if (!validateStep(currentStep)) return;
+  if (!validateQuestion(currentQuestion)) return;
 
   form.hidden = true;
   document.querySelector(".form-progress")?.setAttribute("hidden", "");
@@ -223,7 +253,8 @@ resetButton?.addEventListener("click", () => {
   form.hidden = false;
   document.querySelector(".form-progress")?.removeAttribute("hidden");
   successPanel.hidden = true;
-  updateFormStep(1);
+  updateFormQuestion(0);
 });
 
+if (progressTotal) progressTotal.textContent = String(formQuestions.length).padStart(2, "0");
 if (yearElement) yearElement.textContent = new Date().getFullYear();
