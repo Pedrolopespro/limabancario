@@ -30,6 +30,7 @@ jobs:
         run: |
           mkdir -p dist
           cp index.html dist/
+          cp -R painel dist/
           cp -R assets logos scripts styles dist/
           touch dist/.nojekyll
 

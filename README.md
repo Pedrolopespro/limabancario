@@ -22,9 +22,23 @@ Acesse `http://127.0.0.1:4173`.
 - `design-system.html`: catalogo visual.
 - `styles/`: tokens e estilos.
 - `scripts/`: interacoes e formulario conversacional.
+- `scripts/tracking-config.js`: IDs públicos e endpoint usados pela mensuração.
+- `scripts/tracking.js`: GTM, GA4, Meta Pixel, Google Ads, consentimento e eventos.
+- `painel/`: painel interno de configuração e diagnóstico.
 - `assets/editorial/images/`: imagens editoriais otimizadas em WebP.
 - `logos/`: assinaturas da marca.
 - `.github/workflows/pages.yml`: publicacao automatica no GitHub Pages.
 
-O formulario esta implementado no frontend e ainda precisa ser conectado ao
-CRM, e-mail ou endpoint escolhido para producao.
+## Painel de rastreamento
+
+- Producao: `https://pedrolopespro.github.io/limabancario/painel/`
+- Chave inicial: `LF-2026-TRACK`
+- O painel nao aparece na navegacao e possui `noindex`.
+- A publicacao exige um Fine-grained Personal Access Token do GitHub com
+  `Contents: Read and write` somente neste repositorio.
+- O token e usado em memoria e nao fica salvo no navegador ou no site.
+
+O formulario envia os dados ao endpoint definido no painel. A conversao
+`generate_lead`/`Lead` somente e disparada depois que o endpoint confirma o
+recebimento com status HTTP `2xx`. Sem endpoint configurado, o site mostra uma
+mensagem de indisponibilidade e nao contabiliza uma conversao falsa.

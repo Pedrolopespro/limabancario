@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#071827" />
+    <title>Painel de Rastreamento | Lima Ferreira</title>
+    <link rel="icon" href="../logos/lima_ferreira_bancario_compacta_ivory_sem_fundo.png" />
+    <link rel="stylesheet" href="../styles/tracking-panel.css?v=20260613-tracking-suite" />
+    <script src="../scripts/tracking-config.js?v=20260613-tracking-suite"></script>
+    <script src="../scripts/tracking-panel.js?v=20260613-tracking-suite" defer></script>
+  </head>
+
+  <body>
+    <section class="access-gate" data-access-gate>
+      <form class="access-card" data-access-form>
+        <img
+          src="../logos/lima_ferreira_bancario_horizontal_ivory_sem_fundo.png"
+          alt="Lima Ferreira Direito Bancário Empresarial"
+        />
+        <p class="eyebrow">Área interna</p>
+        <h1>Painel de rastreamento</h1>
+        <p>Informe a chave interna para acessar a configuração.</p>
+        <label>
+          <span>Chave de acesso</span>
+          <input type="password" name="access_key" autocomplete="current-password" required />
+        </label>
+        <button type="submit">Entrar</button>
+        <p class="form-message" data-access-message aria-live="polite"></p>
+      </form>
+    </section>
+
+    <div class="panel" data-panel hidden>
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow">Lima Ferreira / Operação</p>
+          <h1>Mensuração e conversões</h1>
+          <p>
+            Configure as plataformas, valide os eventos e publique sem editar código manualmente.
+          </p>
+        </div>
+        <div class="header-actions">
+          <a href="../" target="_blank" rel="noreferrer">Abrir site</a>
+          <button type="button" data-lock-panel>Sair</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="status-grid" aria-label="Status da mensuração">
+          <article class="status-card">
+            <span data-status-dot="gtm"></span>
+            <p>Google Tag Manager</p>
+            <strong data-status-text="gtm">Não configurado</strong>
+          </article>
+          <article class="status-card">
+            <span data-status-dot="ga4"></span>
+            <p>Google Analytics 4</p>
+            <strong data-status-text="ga4">Não configurado</strong>
+          </article>
+          <article class="status-card">
+            <span data-status-dot="meta"></span>
+            <p>Meta Pixel</p>
+            <strong data-status-text="meta">Não configurado</strong>
+          </article>
+          <article class="status-card">
+            <span data-status-dot="form"></span>
+            <p>Entrega do formulário</p>
+            <strong data-status-text="form">Não configurado</strong>
+          </article>
+        </section>
+
+        <div class="panel-layout">
+          <form class="config-form" data-config-form>
+            <section class="panel-section">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">01 / Plataformas</p>
+                  <h2>IDs de mensuração</h2>
+                </div>
+                <p>
+                  Os identificadores de pixels são públicos por natureza. Senhas, tokens e segredos
+                  nunca devem ser colocados aqui.
+                </p>
+              </div>
+
+              <div class="field-grid">
+                <label>
+                  <span>Google Tag Manager</span>
+                  <input
+                    name="gtmId"
+                    type="text"
+                    placeholder="GTM-XXXXXXX"
+                    pattern="GTM-[A-Za-z0-9]+"
+                  />
+                  <small>Container principal. Ex.: GTM-ABC1234.</small>
+                </label>
+                <label>
+                  <span>Google Analytics 4</span>
+                  <input
+                    name="ga4MeasurementId"
+                    type="text"
+                    placeholder="G-XXXXXXXXXX"
+                    pattern="G-[A-Za-z0-9]+"
+                  />
+                  <small>Opcional se o GA4 já for instalado dentro do GTM.</small>
+                </label>
+                <label>
+                  <span>Meta Pixel</span>
+                  <input name="metaPixelId" type="text" inputmode="numeric" placeholder="1234567890" />
+                  <small>Somente números.</small>
+                </label>
+                <label>
+                  <span>Google Ads ID</span>
+                  <input
+                    name="googleAdsId"
+                    type="text"
+                    placeholder="AW-XXXXXXXXX"
+                    pattern="AW-[A-Za-z0-9]+"
+                  />
+                </label>
+                <label>
+                  <span>Google Ads: rótulo da conversão</span>
+                  <input name="googleAdsLeadLabel" type="text" placeholder="AbCdEfGhIjk" />
+                  <small>Usado apenas no evento de lead confirmado.</small>
+                </label>
+                <label class="check-field">
+                  <input name="loadMetaDirectly" type="checkbox" />
+                  <span>
+                    Carregar Meta Pixel diretamente
+                    <small>Desative se o Pixel for instalado dentro do GTM.</small>
+                  </span>
+                </label>
+              </div>
+            </section>
+
+            <section class="panel-section">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">02 / Formulário</p>
+                  <h2>Recebimento do lead</h2>
+                </div>
+                <p>
+                  O evento <code>Lead</code> só dispara depois que este endpoint confirmar o
+                  recebimento com status HTTP entre 200 e 299.
+                </p>
+              </div>
+
+              <div class="field-grid">
+                <label class="field-wide">
+                  <span>URL do webhook ou CRM</span>
+                  <input
+                    name="formEndpoint"
+                    type="url"
+                    placeholder="https://automacao.exemplo.com/webhook/lead"
+                  />
+                  <small>
+                    Precisa aceitar requisições do domínio do site e não pode exigir segredo no
+                    navegador.
+                  </small>
+                </label>
+                <label>
+                  <span>Formato do envio</span>
+                  <select name="formFormat">
+                    <option value="json">JSON</option>
+                    <option value="form">Form URL Encoded</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Método HTTP</span>
+                  <select name="formMethod">
+                    <option value="POST">POST</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="security-note">
+                <strong>Dados pessoais ficam fora dos pixels.</strong>
+                <p>
+                  Nome, e-mail, telefone, CNPJ, empresa e relato do caso são enviados somente ao
+                  webhook. GTM, GA4 e Meta recebem apenas nomes de eventos e contexto anônimo.
+                </p>
+              </div>
+              <button class="test-webhook" type="button" data-test-webhook>
+                Testar conexão do webhook
+              </button>
+              <p class="webhook-message" data-webhook-message aria-live="polite"></p>
+            </section>
+
+            <section class="panel-section">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">03 / Privacidade</p>
+                  <h2>Consentimento e ambiente</h2>
+                </div>
+              </div>
+
+              <div class="field-grid">
+                <label class="check-field">
+                  <input name="consentRequired" type="checkbox" />
+                  <span>
+                    Exigir consentimento
+                    <small>Recomendado. Os provedores só carregam após o aceite.</small>
+                  </span>
+                </label>
+                <label class="check-field">
+                  <input name="debug" type="checkbox" />
+                  <span>
+                    Ativar log persistente
+                    <small>Use apenas durante testes e desligue em produção.</small>
+                  </span>
+                </label>
+              </div>
+            </section>
+
+            <section class="panel-section publish-section">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">04 / Publicação</p>
+                  <h2>Publicar no GitHub</h2>
+                </div>
+                <p>
+                  O token é usado uma única vez, diretamente entre este navegador e o GitHub. Ele
+                  não é salvo no site nem no armazenamento local.
+                </p>
+              </div>
+
+              <div class="field-grid">
+                <label class="field-wide">
+                  <span>Fine-grained personal access token</span>
+                  <input
+                    name="githubToken"
+                    type="password"
+                    autocomplete="off"
+                    placeholder="github_pat_..."
+                  />
+                  <small>
+                    Permissão mínima: Contents — Read and write, somente para o repositório
+                    Pedrolopespro/limabancario.
+                  </small>
+                </label>
+                <label>
+                  <span>Branch</span>
+                  <input name="githubBranch" type="text" value="main" />
+                </label>
+                <label>
+                  <span>Arquivo</span>
+                  <input name="githubPath" type="text" value="scripts/tracking-config.js" readonly />
+                </label>
+              </div>
+
+              <div class="publish-actions">
+                <button class="button-secondary" type="button" data-save-preview>
+                  Salvar prévia neste navegador
+                </button>
+                <button class="button-secondary" type="button" data-open-preview>
+                  Testar no site
+                </button>
+                <button class="button-primary" type="submit">Publicar configuração</button>
+              </div>
+              <p class="publish-message" data-publish-message aria-live="polite"></p>
+            </section>
+          </form>
+
+          <aside class="diagnostics">
+            <section class="diagnostic-card">
+              <p class="eyebrow">Diagnóstico</p>
+              <h2>Eventos principais</h2>
+              <ul class="event-list">
+                <li><code>page_view</code><span>Página carregada</span></li>
+                <li><code>lf_cta_click</code><span>Botões e chamadas</span></li>
+                <li><code>lf_scroll_depth</code><span>25%, 50%, 75% e 90%</span></li>
+                <li><code>lf_section_view</code><span>Seção visualizada</span></li>
+                <li><code>lf_faq_open</code><span>Pergunta aberta</span></li>
+                <li><code>lf_engaged_time</code><span>30s, 60s e 120s</span></li>
+                <li><code>lf_video_start</code><span>Vídeo com áudio</span></li>
+                <li><code>lf_form_start</code><span>Primeira interação</span></li>
+                <li><code>lf_form_step_complete</code><span>Etapa concluída</span></li>
+                <li><code>lf_form_abandon</code><span>Formulário abandonado</span></li>
+                <li><code>lf_form_submit_error</code><span>Falha de entrega</span></li>
+                <li class="event-list__conversion">
+                  <code>generate_lead / Lead</code><span>Envio confirmado</span>
+                </li>
+              </ul>
+            </section>
+
+            <section class="diagnostic-card">
+              <p class="eyebrow">Últimos testes</p>
+              <div class="event-log" data-event-log>
+                <p>Nenhum evento de prévia registrado neste navegador.</p>
+              </div>
+              <button class="text-button" type="button" data-clear-log>Limpar registro</button>
+            </section>
+
+            <section class="diagnostic-card">
+              <p class="eyebrow">Links úteis</p>
+              <div class="resource-list">
+                <a href="https://tagassistant.google.com/" target="_blank" rel="noreferrer">
+                  Google Tag Assistant
+                </a>
+                <a
+                  href="https://business.facebook.com/events_manager2"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Gerenciador de Eventos Meta
+                </a>
+                <a
+                  href="https://github.com/Pedrolopespro/limabancario/actions"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Acompanhar deploy
+                </a>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

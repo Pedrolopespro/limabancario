@@ -13,6 +13,7 @@ const backButton = document.querySelector("[data-form-back]");
 const submitButton = document.querySelector("[data-form-submit]");
 const successPanel = document.querySelector("[data-form-success]");
 const resetButton = document.querySelector("[data-form-reset]");
+const deliveryStatus = document.querySelector("[data-form-delivery-status]");
 const yearElement = document.querySelector("[data-current-year]");
 const analysisSection = document.querySelector("#analise");
 const specialistSection = document.querySelector("#especialista");
@@ -22,6 +23,11 @@ const videoPlayButton = document.querySelector("[data-video-play]");
 
 let currentQuestion = 0;
 let choiceAdvanceTimer;
+let isSubmitting = false;
+
+const trackEvent = (eventName, parameters = {}) => {
+  window.LFTracking?.track(eventName, parameters);
+};
 
 if (specialistSection && analysisSection) {
   specialistSection.insertAdjacentElement("afterend", analysisSection);
@@ -49,6 +55,13 @@ const validateQuestion = (questionIndex) => {
 
   for (const field of fields) {
     if (!field.checkValidity()) {
+      trackEvent("lf_form_validation_error", {
+        form_id: form?.id,
+        question_index: questionIndex + 1,
+        question_id: formQuestions[questionIndex]?.querySelector("h3")?.id,
+        field_name: field.name,
+        validation_type: field.validity.valueMissing ? "required" : "format",
+      });
       field.reportValidity();
       return false;
     }
@@ -83,6 +96,15 @@ const updateFormQuestion = (questionIndex) => {
   if (backButton) backButton.hidden = currentQuestion === 0;
   if (nextButton) nextButton.hidden = isLastQuestion;
   if (submitButton) submitButton.hidden = !isLastQuestion;
+  if (deliveryStatus) deliveryStatus.textContent = "";
+
+  trackEvent("lf_form_step_view", {
+    form_id: form?.id,
+    question_index: currentQuestion + 1,
+    question_total: formQuestions.length,
+    question_id: activeQuestion?.querySelector("h3")?.id,
+    question_section: activeQuestion?.dataset.questionSection,
+  });
 
   const activeHeading = activeQuestion?.querySelector("h3");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -99,6 +121,14 @@ const updateFormQuestion = (questionIndex) => {
 const advanceFormQuestion = () => {
   if (!validateQuestion(currentQuestion)) return;
 
+  const activeQuestion = formQuestions[currentQuestion];
+  trackEvent("lf_form_step_complete", {
+    form_id: form?.id,
+    question_index: currentQuestion + 1,
+    question_total: formQuestions.length,
+    question_id: activeQuestion?.querySelector("h3")?.id,
+    question_section: activeQuestion?.dataset.questionSection,
+  });
   updateFormQuestion(Math.min(currentQuestion + 1, formQuestions.length - 1));
 };
 
@@ -210,6 +240,11 @@ nextButton?.addEventListener("click", () => {
 });
 
 backButton?.addEventListener("click", () => {
+  trackEvent("lf_form_back", {
+    form_id: form?.id,
+    from_question: currentQuestion + 1,
+    to_question: Math.max(currentQuestion, 1),
+  });
   updateFormQuestion(Math.max(currentQuestion - 1, 0));
 });
 
@@ -237,15 +272,104 @@ document.querySelectorAll("[data-mask]").forEach((field) => {
   });
 });
 
-form?.addEventListener("submit", (event) => {
+const serializeForm = () => {
+  const formData = new FormData(form);
+  return Object.fromEntries(formData.entries());
+};
+
+const buildLeadPayload = () => {
+  const campaign = window.LFTracking?.getCampaignContext?.() || {};
+  return {
+    ...serializeForm(),
+    ...campaign,
+    source: "landing_page",
+    page_url: window.location.href,
+    page_title: document.title,
+    referrer: document.referrer || "",
+    submitted_at: new Date().toISOString(),
+  };
+};
+
+const sendLead = async () => {
+  const formConfig = window.LFTracking?.config?.form || window.LF_TRACKING_CONFIG?.form || {};
+  const endpoint = formConfig.endpoint?.trim();
+
+  if (!endpoint) {
+    throw new Error("O canal de recebimento ainda não foi configurado.");
+  }
+
+  const payload = buildLeadPayload();
+  const isFormEncoded = formConfig.format === "form";
+  const response = await fetch(endpoint, {
+    method: formConfig.method || "POST",
+    headers: isFormEncoded ? undefined : { "Content-Type": "application/json" },
+    body: isFormEncoded ? new URLSearchParams(payload) : JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw new Error(`O canal de recebimento respondeu com o status ${response.status}.`);
+  }
+
+  return response;
+};
+
+form?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  if (!validateQuestion(currentQuestion)) return;
+  if (isSubmitting || !validateQuestion(currentQuestion)) return;
 
-  form.hidden = true;
-  document.querySelector(".form-progress")?.setAttribute("hidden", "");
-  successPanel.hidden = false;
-  successPanel.focus();
+  const activeQuestion = formQuestions[currentQuestion];
+  trackEvent("lf_form_step_complete", {
+    form_id: form.id,
+    question_index: currentQuestion + 1,
+    question_total: formQuestions.length,
+    question_id: activeQuestion?.querySelector("h3")?.id,
+    question_section: activeQuestion?.dataset.questionSection,
+  });
+  trackEvent("lf_form_submit_attempt", {
+    form_id: form.id,
+    question_total: formQuestions.length,
+  });
+
+  isSubmitting = true;
+  submitButton?.setAttribute("aria-busy", "true");
+  if (submitButton) submitButton.firstChild.textContent = "Enviando ";
+  if (deliveryStatus) deliveryStatus.textContent = "Enviando suas informações com segurança...";
+
+  try {
+    await sendLead();
+    trackEvent("lf_form_submit", {
+      form_id: form.id,
+      delivery_status: "confirmed",
+    });
+    trackEvent("generate_lead", {
+      form_id: form.id,
+      lead_type: "analise_bancaria_empresarial",
+      value: 1,
+      currency: "BRL",
+    });
+
+    form.hidden = true;
+    document.querySelector(".form-progress")?.setAttribute("hidden", "");
+    successPanel.hidden = false;
+    successPanel.focus();
+  } catch (error) {
+    trackEvent("lf_form_submit_error", {
+      form_id: form.id,
+      delivery_status: "failed",
+      error_type: error instanceof TypeError ? "network" : "configuration_or_endpoint",
+    });
+    if (deliveryStatus) {
+      deliveryStatus.textContent =
+        error instanceof Error
+          ? `${error.message} Tente novamente ou fale diretamente com a equipe.`
+          : "Não foi possível enviar. Tente novamente ou fale diretamente com a equipe.";
+    }
+  } finally {
+    isSubmitting = false;
+    submitButton?.removeAttribute("aria-busy");
+    if (submitButton) submitButton.firstChild.textContent = "Enviar para análise ";
+  }
 });
 
 resetButton?.addEventListener("click", () => {
@@ -258,3 +382,15 @@ resetButton?.addEventListener("click", () => {
 
 if (progressTotal) progressTotal.textContent = String(formQuestions.length).padStart(2, "0");
 if (yearElement) yearElement.textContent = new Date().getFullYear();
+
+document.querySelector("[data-privacy-settings]")?.addEventListener("click", () => {
+  window.LFTracking?.reopenConsent();
+});
+
+trackEvent("lf_form_step_view", {
+  form_id: form?.id,
+  question_index: 1,
+  question_total: formQuestions.length,
+  question_id: formQuestions[0]?.querySelector("h3")?.id,
+  question_section: formQuestions[0]?.dataset.questionSection,
+});

@@ -12,7 +12,10 @@
     <link rel="icon" href="logos/lima_ferreira_bancario_compacta_ivory_sem_fundo.png" />
     <link rel="stylesheet" href="styles/tokens.css?v=20260612-mobile-type-system" />
     <link rel="stylesheet" href="styles/landing.css?v=20260613-conversational-form" />
-    <script src="scripts/landing.js?v=20260613-conversational-form" defer></script>
+    <link rel="stylesheet" href="styles/tracking.css?v=20260613-tracking-suite" />
+    <script src="scripts/tracking-config.js?v=20260613-tracking-suite"></script>
+    <script src="scripts/tracking.js?v=20260613-tracking-suite" defer></script>
+    <script src="scripts/landing.js?v=20260613-tracking-suite" defer></script>
   </head>
 
   <body>
@@ -968,6 +971,8 @@
                 </button>
               </div>
 
+              <p class="form-delivery-status" data-form-delivery-status aria-live="polite"></p>
+
               <p class="form-keyboard-hint" aria-hidden="true">
                 Pressione <kbd>Enter</kbd> para continuar
               </p>
@@ -985,10 +990,10 @@
                 </svg>
               </span>
               <p class="eyebrow eyebrow--dark">Informações registradas</p>
-              <h3>Etapas concluídas.</h3>
+              <h3>Solicitação enviada.</h3>
               <p>
-                O formulário está pronto para ser conectado ao canal de atendimento ou CRM na
-                publicação do site.
+                A equipe recebeu as informações para avaliação inicial e entrará em contato pelos
+                canais informados.
               </p>
               <button class="button button--outline" type="button" data-form-reset>
                 Preencher novamente
@@ -1022,6 +1027,9 @@
           <a href="#analise">Solicitar análise</a>
           <span>Atendimento online</span>
           <span>Dados de contato pendentes</span>
+          <button class="privacy-settings" type="button" data-privacy-settings>
+            Preferências de privacidade
+          </button>
         </div>
 
         <a href="#inicio" class="back-to-top">
