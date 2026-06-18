@@ -20,6 +20,8 @@ const specialistSection = document.querySelector("#especialista");
 const heroSection = document.querySelector("#inicio");
 const videoPreview = document.querySelector("[data-video-preview]");
 const videoPlayButton = document.querySelector("[data-video-play]");
+const mobileCta = document.querySelector("[data-mobile-cta]");
+const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 let currentQuestion = 0;
 let choiceAdvanceTimer;
@@ -43,6 +45,23 @@ const closeMenu = () => {
 
 const updateHeader = () => {
   header?.classList.toggle("is-scrolled", window.scrollY > 32);
+};
+
+const createMobileCtaRipple = (event) => {
+  if (!mobileCta || reducedMotionQuery.matches) return;
+
+  const rect = mobileCta.getBoundingClientRect();
+  const ripple = document.createElement("span");
+  ripple.className = "mobile-cta__ripple";
+  ripple.style.setProperty("--ripple-x", `${event.clientX - rect.left}px`);
+  ripple.style.setProperty("--ripple-y", `${event.clientY - rect.top}px`);
+  mobileCta.appendChild(ripple);
+
+  window.setTimeout(() => ripple.remove(), 650);
+};
+
+const releaseMobileCta = () => {
+  mobileCta?.classList.remove("is-pressing");
 };
 
 const getQuestionFields = (questionIndex) => {
@@ -206,6 +225,14 @@ window.addEventListener("keydown", (event) => {
 window.addEventListener("scroll", updateHeader, { passive: true });
 updateHeader();
 
+mobileCta?.addEventListener("pointerdown", (event) => {
+  mobileCta.classList.add("is-pressing");
+  createMobileCtaRipple(event);
+});
+mobileCta?.addEventListener("pointerup", releaseMobileCta);
+mobileCta?.addEventListener("pointerleave", releaseMobileCta);
+mobileCta?.addEventListener("pointercancel", releaseMobileCta);
+
 videoPlayButton?.addEventListener("click", playVideoWithAudio);
 videoPreview?.addEventListener("ended", () => {
   videoPreview.currentTime = 0;
@@ -344,7 +371,7 @@ form?.addEventListener("submit", async (event) => {
     });
     trackEvent("generate_lead", {
       form_id: form.id,
-      lead_type: "analise_bancaria_empresarial",
+      lead_type: "raio_x_divida_empresarial",
       value: 1,
       currency: "BRL",
     });
@@ -368,7 +395,7 @@ form?.addEventListener("submit", async (event) => {
   } finally {
     isSubmitting = false;
     submitButton?.removeAttribute("aria-busy");
-    if (submitButton) submitButton.firstChild.textContent = "Enviar para análise ";
+    if (submitButton) submitButton.firstChild.textContent = "Enviar para o Raio-X ";
   }
 });
 
