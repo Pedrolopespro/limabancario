@@ -350,7 +350,7 @@ const buildWhatsAppMessage = (payload, formConfig) => {
   return lines.join("\n");
 };
 
-const openWhatsAppFallback = (payload, formConfig) => {
+const getWhatsAppFallbackUrl = (payload, formConfig) => {
   const fallback = formConfig.whatsappFallback || {};
   const number = String(fallback.number || "").replace(/\D/g, "");
 
@@ -359,14 +359,65 @@ const openWhatsAppFallback = (payload, formConfig) => {
   }
 
   const message = encodeURIComponent(buildWhatsAppMessage(payload, formConfig));
-  const url = `https://wa.me/${number}?text=${message}`;
+  return `https://wa.me/${number}?text=${message}`;
+};
+
+const openWhatsAppUrl = (url) => {
   const openedWindow = window.open(url, "_blank", "noopener,noreferrer");
 
   if (!openedWindow) {
     window.location.href = url;
   }
+};
+
+const openWhatsAppFallback = (payload, formConfig) => {
+  const url = getWhatsAppFallbackUrl(payload, formConfig);
+  openWhatsAppUrl(url);
 
   return { ok: true, channel: "whatsapp", url };
+};
+
+const showLeadConfirmationModal = (delivery) => {
+  if (delivery.channel === "whatsapp") return;
+
+  document.querySelector("[data-lead-confirmation-modal]")?.remove();
+
+  const modal = document.createElement("div");
+  modal.className = "lead-modal";
+  modal.dataset.leadConfirmationModal = "";
+  modal.innerHTML = `
+    <div class="lead-modal__backdrop" data-lead-modal-close></div>
+    <div class="lead-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="lead-modal-title">
+      <button class="lead-modal__close" type="button" aria-label="Fechar" data-lead-modal-close>×</button>
+      <p class="eyebrow eyebrow--dark">Solicitação enviada</p>
+      <h3 id="lead-modal-title">Recebemos seu pedido de análise.</h3>
+      <p>A equipe do Lima Ferreira recebeu as informações por e-mail. Se quiser acelerar o atendimento, fale agora pelo WhatsApp.</p>
+      <div class="lead-modal__actions">
+        <a class="button button--primary" href="${delivery.whatsappUrl}" target="_blank" rel="noopener noreferrer" data-lead-whatsapp>
+          Falar agora pelo WhatsApp
+          <span class="button-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20">
+              <path d="M4 10h11M11 6l4 4-4 4" />
+            </svg>
+          </span>
+        </a>
+        <button class="button button--outline" type="button" data-lead-modal-close>Continuar na página</button>
+      </div>
+    </div>
+  `;
+
+  modal.querySelectorAll("[data-lead-modal-close]").forEach((button) => {
+    button.addEventListener("click", () => modal.remove());
+  });
+  modal.querySelector("[data-lead-whatsapp]")?.addEventListener("click", () => {
+    trackEvent("lf_post_submit_whatsapp_click", {
+      form_id: form?.id,
+      delivery_channel: delivery.channel,
+    });
+  });
+
+  document.body.appendChild(modal);
+  modal.querySelector(".lead-modal__dialog")?.focus();
 };
 
 const sendLead = async () => {
@@ -395,7 +446,20 @@ const sendLead = async () => {
     return openWhatsAppFallback(payload, formConfig);
   }
 
-  return { ok: true, channel: "webhook", response };
+  let responseBody = {};
+
+  try {
+    responseBody = await response.clone().json();
+  } catch {
+    responseBody = {};
+  }
+
+  return {
+    ok: true,
+    channel: responseBody.channel || "webhook",
+    response,
+    whatsappUrl: getWhatsAppFallbackUrl(payload, formConfig),
+  };
 };
 
 form?.addEventListener("submit", async (event) => {
@@ -447,6 +511,7 @@ form?.addEventListener("submit", async (event) => {
     }
     successPanel.hidden = false;
     successPanel.focus();
+    showLeadConfirmationModal(delivery);
   } catch (error) {
     trackEvent("lf_form_submit_error", {
       form_id: form.id,

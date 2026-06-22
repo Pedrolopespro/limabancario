@@ -127,6 +127,37 @@ $headers = [
 
 $sent = mail($to, $subject, $message, implode("\r\n", $headers));
 
+$leadRecord = [
+    'id' => bin2hex(random_bytes(8)),
+    'created_at' => gmdate('c'),
+    'status' => 'novo',
+    'email_delivery' => $sent ? 'sent' : 'failed',
+    'notes' => '',
+    'payload' => [],
+];
+
+foreach ($labels as $field => $label) {
+    $fieldValue = $sanitize($value($field));
+    if ($fieldValue === '') {
+        continue;
+    }
+
+    $leadRecord['payload'][$field] = $fieldValue === 'on' ? 'Sim' : $fieldValue;
+}
+
+$storageDir = dirname(__DIR__) . '/storage';
+$leadsFile = $storageDir . '/leads.jsonl';
+
+if (!is_dir($storageDir)) {
+    mkdir($storageDir, 0755, true);
+}
+
+file_put_contents(
+    $leadsFile,
+    json_encode($leadRecord, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL,
+    FILE_APPEND | LOCK_EX
+);
+
 if (!$sent) {
     http_response_code(502);
     echo json_encode(['ok' => false, 'error' => 'Não foi possível enviar o e-mail.']);
