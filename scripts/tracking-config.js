@@ -17,5 +17,11 @@ window.LF_TRACKING_CONFIG = {
     endpoint: "",
     method: "POST",
     format: "json",
+    whatsappFallback: {
+      enabled: true,
+      number: "5561999065812",
+      intro:
+        "Olá, Lima Ferreira Advogados. Preenchi o Raio-X da Dívida Empresarial e gostaria de uma análise.",
+    },
   },
 };

@@ -304,6 +304,21 @@ const serializeForm = () => {
   return Object.fromEntries(formData.entries());
 };
 
+const leadFieldLabels = {
+  debt_amount: "Valor aproximado das dívidas",
+  debt_type: "Dívida que mais preocupa",
+  lawsuit: "Existe processo judicial",
+  asset_block: "Bloqueio, penhora ou risco",
+  company: "Empresa",
+  cnpj: "CNPJ",
+  location: "Cidade/Estado",
+  case_note: "Principal preocupação",
+  name: "Nome",
+  phone: "WhatsApp",
+  email: "E-mail",
+  consent: "Autorização de contato",
+};
+
 const buildLeadPayload = () => {
   const campaign = window.LFTracking?.getCampaignContext?.() || {};
   return {
@@ -317,27 +332,70 @@ const buildLeadPayload = () => {
   };
 };
 
-const sendLead = async () => {
-  const formConfig = window.LFTracking?.config?.form || window.LF_TRACKING_CONFIG?.form || {};
-  const endpoint = formConfig.endpoint?.trim();
+const buildWhatsAppMessage = (payload, formConfig) => {
+  const lines = [
+    formConfig.whatsappFallback?.intro ||
+      "Olá, Lima Ferreira Advogados. Preenchi o Raio-X da Dívida Empresarial.",
+    "",
+    "Resumo do caso:",
+  ];
 
-  if (!endpoint) {
+  Object.entries(leadFieldLabels).forEach(([field, label]) => {
+    if (!payload[field]) return;
+    lines.push(`${label}: ${payload[field] === "on" ? "Sim" : payload[field]}`);
+  });
+
+  lines.push("", `Página de origem: ${payload.page_url}`);
+
+  return lines.join("\n");
+};
+
+const openWhatsAppFallback = (payload, formConfig) => {
+  const fallback = formConfig.whatsappFallback || {};
+  const number = String(fallback.number || "").replace(/\D/g, "");
+
+  if (!fallback.enabled || !number) {
     throw new Error("O canal de recebimento ainda não foi configurado.");
   }
 
-  const payload = buildLeadPayload();
-  const isFormEncoded = formConfig.format === "form";
-  const response = await fetch(endpoint, {
-    method: formConfig.method || "POST",
-    headers: isFormEncoded ? undefined : { "Content-Type": "application/json" },
-    body: isFormEncoded ? new URLSearchParams(payload) : JSON.stringify(payload),
-  });
+  const message = encodeURIComponent(buildWhatsAppMessage(payload, formConfig));
+  const url = `https://wa.me/${number}?text=${message}`;
+  const openedWindow = window.open(url, "_blank", "noopener,noreferrer");
 
-  if (!response.ok) {
-    throw new Error(`O canal de recebimento respondeu com o status ${response.status}.`);
+  if (!openedWindow) {
+    window.location.href = url;
   }
 
-  return response;
+  return { ok: true, channel: "whatsapp", url };
+};
+
+const sendLead = async () => {
+  const formConfig = window.LFTracking?.config?.form || window.LF_TRACKING_CONFIG?.form || {};
+  const endpoint = formConfig.endpoint?.trim();
+  const payload = buildLeadPayload();
+
+  if (!endpoint) {
+    return openWhatsAppFallback(payload, formConfig);
+  }
+
+  const isFormEncoded = formConfig.format === "form";
+  let response;
+
+  try {
+    response = await fetch(endpoint, {
+      method: formConfig.method || "POST",
+      headers: isFormEncoded ? undefined : { "Content-Type": "application/json" },
+      body: isFormEncoded ? new URLSearchParams(payload) : JSON.stringify(payload),
+    });
+  } catch {
+    return openWhatsAppFallback(payload, formConfig);
+  }
+
+  if (!response.ok) {
+    return openWhatsAppFallback(payload, formConfig);
+  }
+
+  return { ok: true, channel: "webhook", response };
 };
 
 form?.addEventListener("submit", async (event) => {
@@ -364,20 +422,27 @@ form?.addEventListener("submit", async (event) => {
   if (deliveryStatus) deliveryStatus.textContent = "Enviando suas informações com segurança...";
 
   try {
-    await sendLead();
+    const delivery = await sendLead();
     trackEvent("lf_form_submit", {
       form_id: form.id,
       delivery_status: "confirmed",
+      delivery_channel: delivery.channel,
     });
     trackEvent("generate_lead", {
       form_id: form.id,
       lead_type: "raio_x_divida_empresarial",
+      delivery_channel: delivery.channel,
       value: 1,
       currency: "BRL",
     });
 
     form.hidden = true;
     document.querySelector(".form-progress")?.setAttribute("hidden", "");
+    const successText = successPanel?.querySelector("p:last-of-type");
+    if (successText && delivery.channel === "whatsapp") {
+      successText.textContent =
+        "Abrimos o WhatsApp com as respostas preenchidas. Envie a mensagem para que a equipe receba o caso e faça o retorno.";
+    }
     successPanel.hidden = false;
     successPanel.focus();
   } catch (error) {
