@@ -24,6 +24,7 @@ Acesse `http://127.0.0.1:4173`.
 - `scripts/`: interacoes e formulario conversacional.
 - `scripts/tracking-config.js`: IDs públicos e endpoint usados pela mensuração.
 - `scripts/tracking.js`: GTM, GA4, Meta Pixel, Google Ads, consentimento e eventos.
+- `api/lead.php`: endpoint em PHP usado no HostGator para enviar leads por e-mail.
 - `painel/`: painel interno de configuração e diagnóstico.
 - `assets/editorial/images/`: imagens editoriais otimizadas em WebP.
 - `logos/`: assinaturas da marca.
@@ -38,7 +39,8 @@ Acesse `http://127.0.0.1:4173`.
   `Contents: Read and write` somente neste repositorio.
 - O token e usado em memoria e nao fica salvo no navegador ou no site.
 
-O formulario envia os dados ao endpoint definido no painel. A conversao
+O formulario envia os dados ao endpoint `api/lead.php`, que dispara um e-mail
+para `contato@limaferreiraadvogados.com.br`. A conversao
 `generate_lead`/`Lead` somente e disparada depois que o endpoint confirma o
-recebimento com status HTTP `2xx`. Sem endpoint configurado, o site mostra uma
-mensagem de indisponibilidade e nao contabiliza uma conversao falsa.
+recebimento com status HTTP `2xx`. Se o e-mail falhar, o formulario usa o
+WhatsApp configurado como fallback para nao perder o lead.

@@ -439,9 +439,11 @@ form?.addEventListener("submit", async (event) => {
     form.hidden = true;
     document.querySelector(".form-progress")?.setAttribute("hidden", "");
     const successText = successPanel?.querySelector("p:last-of-type");
-    if (successText && delivery.channel === "whatsapp") {
+    if (successText) {
       successText.textContent =
-        "Abrimos o WhatsApp com as respostas preenchidas. Envie a mensagem para que a equipe receba o caso e faça o retorno.";
+        delivery.channel === "whatsapp"
+          ? "Abrimos o WhatsApp com as respostas preenchidas. Envie a mensagem para que a equipe receba o caso e faça o retorno."
+          : "A equipe recebeu as informações iniciais por e-mail e entrará em contato pelos canais informados.";
     }
     successPanel.hidden = false;
     successPanel.focus();

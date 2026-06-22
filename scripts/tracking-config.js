@@ -14,7 +14,7 @@ window.LF_TRACKING_CONFIG = {
     policyVersion: "2026-06",
   },
   form: {
-    endpoint: "",
+    endpoint: "api/lead.php",
     method: "POST",
     format: "json",
     whatsappFallback: {
