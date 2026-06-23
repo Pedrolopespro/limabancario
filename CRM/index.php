@@ -5,10 +5,10 @@ session_start();
 
 header('X-Robots-Tag: noindex, nofollow', true);
 
+require_once dirname(__DIR__) . '/api/lead-storage.php';
+
 const CRM_PASSWORD_HASH = '$2y$12$i0FSyEh2VpnLZmuFttZHc.8ikabEdoWk6kk5sOPwWrM1YroiTmEaq';
 
-$storageDir = dirname(__DIR__) . '/storage';
-$leadsFile = $storageDir . '/leads.jsonl';
 $statuses = [
     'novo' => 'Novo',
     'em_contato' => 'Em contato',
@@ -22,57 +22,6 @@ $statuses = [
 function h(?string $value): string
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
-}
-
-function ensureStorage(string $storageDir, string $leadsFile): void
-{
-    if (!is_dir($storageDir)) {
-        mkdir($storageDir, 0755, true);
-    }
-
-    if (!file_exists($leadsFile)) {
-        file_put_contents($leadsFile, '');
-    }
-}
-
-function loadLeads(string $leadsFile): array
-{
-    if (!file_exists($leadsFile)) {
-        return [];
-    }
-
-    $lines = file($leadsFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
-    $leads = [];
-
-    foreach ($lines as $line) {
-        $lead = json_decode($line, true);
-        if (!is_array($lead) || empty($lead['id'])) {
-            continue;
-        }
-
-        $lead['payload'] = is_array($lead['payload'] ?? null) ? $lead['payload'] : [];
-        $lead['status'] = (string) ($lead['status'] ?? 'novo');
-        $lead['notes'] = (string) ($lead['notes'] ?? '');
-        $leads[] = $lead;
-    }
-
-    usort($leads, static function (array $a, array $b): int {
-        return strcmp((string) ($b['created_at'] ?? ''), (string) ($a['created_at'] ?? ''));
-    });
-
-    return $leads;
-}
-
-function saveLeads(string $storageDir, string $leadsFile, array $leads): void
-{
-    ensureStorage($storageDir, $leadsFile);
-
-    $content = '';
-    foreach ($leads as $lead) {
-        $content .= json_encode($lead, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL;
-    }
-
-    file_put_contents($leadsFile, $content, LOCK_EX);
 }
 
 function formatDate(?string $date): string
@@ -109,34 +58,19 @@ if (($_GET['logout'] ?? '') === '1') {
     exit;
 }
 
-ensureStorage($storageDir, $leadsFile);
+lf_ensure_file_storage();
 
 if ($isLoggedIn && $_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'update') {
     $id = (string) ($_POST['id'] ?? '');
     $status = (string) ($_POST['status'] ?? 'novo');
     $notes = trim((string) ($_POST['notes'] ?? ''));
-    $leads = loadLeads($leadsFile);
 
-    foreach ($leads as &$lead) {
-        if (($lead['id'] ?? '') !== $id) {
-            continue;
-        }
-
-        if (array_key_exists($status, $statuses)) {
-            $lead['status'] = $status;
-        }
-        $lead['notes'] = $notes;
-        $lead['updated_at'] = gmdate('c');
-        break;
-    }
-    unset($lead);
-
-    saveLeads($storageDir, $leadsFile, $leads);
+    lf_update_lead($id, $status, $notes, $statuses);
     header('Location: ./?lead=' . urlencode($id));
     exit;
 }
 
-$leads = $isLoggedIn ? loadLeads($leadsFile) : [];
+$leads = $isLoggedIn ? lf_load_leads() : [];
 $selectedId = (string) ($_GET['lead'] ?? ($leads[0]['id'] ?? ''));
 $selectedLead = null;
 $statusFilter = (string) ($_GET['status'] ?? '');

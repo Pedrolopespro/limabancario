@@ -24,7 +24,8 @@ Acesse `http://127.0.0.1:4173`.
 - `scripts/`: interacoes e formulario conversacional.
 - `scripts/tracking-config.js`: IDs públicos e endpoint usados pela mensuração.
 - `scripts/tracking.js`: GTM, GA4, Meta Pixel, Google Ads, consentimento e eventos.
-- `api/lead.php`: endpoint em PHP usado no HostGator para enviar leads por e-mail.
+- `api/lead.php`: endpoint em PHP usado no HostGator para enviar leads por e-mail e registrar no CRM.
+- `api/lead-storage.php`: camada de armazenamento do CRM, com MySQL e fallback em arquivo.
 - `CRM/`: mini CRM interno em PHP para acompanhar leads recebidos.
 - `storage/`: armazenamento local do CRM protegido por `.htaccess`.
 - `painel/`: painel interno de configuração e diagnóstico.
@@ -42,11 +43,12 @@ Acesse `http://127.0.0.1:4173`.
 - O token e usado em memoria e nao fica salvo no navegador ou no site.
 
 O formulario envia os dados ao endpoint `api/lead.php`, que dispara um e-mail
-para `contato@limaferreiraadvogados.com.br` e registra o lead no arquivo
-`storage/leads.jsonl`. A conversao `generate_lead`/`Lead` somente e disparada
-depois que o endpoint confirma o recebimento com status HTTP `2xx`. Se o e-mail
-falhar, o formulario usa o WhatsApp configurado como fallback para nao perder o
-lead.
+para `leads@limaferreiraadvogados.com.br` e registra o lead no MySQL do CRM.
+Se o MySQL nao estiver configurado ou ficar indisponivel, o endpoint usa o
+arquivo `storage/leads.jsonl` como fallback. A conversao `generate_lead`/`Lead`
+somente e disparada depois que o endpoint confirma o recebimento com status HTTP
+`2xx`. Se o e-mail falhar, o formulario usa o WhatsApp configurado como fallback
+para nao perder o lead.
 
 ### Meta Conversions API
 
@@ -64,5 +66,18 @@ GitHub nem no painel publico. Na HostGator, crie uma copia de
 - URL em producao: `https://limaferreiraadvogados.com.br/empresarial/CRM/`
 - Acesso protegido por senha e com `noindex`.
 - Permite visualizar leads, alterar status e salvar observacoes internas.
-- O arquivo bruto dos leads fica em `storage/leads.jsonl` e nao deve ser
-  versionado.
+- A base principal fica em MySQL quando `api/database.config.php` existe no
+  servidor.
+- O arquivo bruto `storage/leads.jsonl` fica como fallback e nao deve ser
+  versionado nem sobrescrito em deploy.
+
+### MySQL do CRM
+
+As credenciais do banco devem ficar apenas no servidor, nunca no GitHub. Na
+HostGator, crie uma copia de `api/database.config.example.php` chamada
+`api/database.config.php` e preencha:
+
+- `host`: normalmente `localhost`.
+- `database`: nome completo do banco criado no cPanel.
+- `user`: usuario MySQL autorizado no banco.
+- `password`: senha do usuario MySQL.

@@ -6,6 +6,8 @@ header('Access-Control-Allow-Origin: https://limaferreiraadvogados.com.br');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
+require_once __DIR__ . '/lead-storage.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
     exit;
@@ -295,14 +297,14 @@ foreach ($labels as $field => $label) {
     $lines[] = "{$label}: {$fieldValue}";
 }
 
-$to = 'contato@limaferreiraadvogados.com.br';
+$to = 'leads@limaferreiraadvogados.com.br';
 $subject = 'Novo lead - Raio-X da Dívida Empresarial';
 $message = implode("\n", $lines);
 $replyTo = filter_var($value('email'), FILTER_VALIDATE_EMAIL) ? $value('email') : $to;
 $headers = [
     'MIME-Version: 1.0',
     'Content-Type: text/plain; charset=UTF-8',
-    'From: Lima Ferreira Advogados <contato@limaferreiraadvogados.com.br>',
+    'From: Lima Ferreira Advogados <leads@limaferreiraadvogados.com.br>',
     'Cc: contaslopeshpl@gmail.com',
     'Reply-To: ' . str_replace(["\r", "\n"], '', $replyTo),
     'X-Mailer: PHP/' . phpversion(),
@@ -344,18 +346,7 @@ $leadRecord['meta_capi_delivery'] = $sent
     ? lf_send_meta_capi_lead(lf_load_meta_capi_config(), $metaPayload, $eventId)
     : ['status' => 'skipped', 'reason' => 'email_delivery_failed', 'event_id' => $eventId];
 
-$storageDir = dirname(__DIR__) . '/storage';
-$leadsFile = $storageDir . '/leads.jsonl';
-
-if (!is_dir($storageDir)) {
-    mkdir($storageDir, 0755, true);
-}
-
-file_put_contents(
-    $leadsFile,
-    json_encode($leadRecord, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL,
-    FILE_APPEND | LOCK_EX
-);
+lf_store_lead($leadRecord);
 
 if (!$sent) {
     http_response_code(502);
