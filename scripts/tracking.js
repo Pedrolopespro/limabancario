@@ -183,7 +183,11 @@
 
   const track = (eventName, parameters = {}) => {
     if (eventName === "generate_lead") leadGenerated = true;
-    const eventId = createId();
+    const providedEventId =
+      typeof parameters.event_id === "string" && /^[a-z0-9_.:-]{8,128}$/i.test(parameters.event_id)
+        ? parameters.event_id
+        : "";
+    const eventId = providedEventId || createId();
     const eventParameters = {
       ...sanitizeParameters(parameters),
       ...getStoredCampaignContext(),

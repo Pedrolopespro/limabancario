@@ -48,6 +48,17 @@ depois que o endpoint confirma o recebimento com status HTTP `2xx`. Se o e-mail
 falhar, o formulario usa o WhatsApp configurado como fallback para nao perder o
 lead.
 
+### Meta Conversions API
+
+O endpoint `api/lead.php` tambem esta preparado para enviar o evento `Lead` pela
+Conversions API da Meta. As credenciais devem ficar apenas no servidor, nunca no
+GitHub nem no painel publico. Na HostGator, crie uma copia de
+`api/meta-capi.config.example.php` chamada `api/meta-capi.config.php` e preencha:
+
+- `pixel_id`: ID do Pixel/Dataset correto da campanha.
+- `access_token`: token da Conversions API.
+- `test_event_code`: opcional, usado para testar no Events Manager.
+
 ## CRM interno
 
 - URL em producao: `https://limaferreiraadvogados.com.br/empresarial/CRM/`

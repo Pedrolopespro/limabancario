@@ -22,6 +22,7 @@ jobs:
         run: |
           mkdir -p dist
           cp index.html dist/
+          cp -R CRM api storage dist/
           cp -R painel dist/
           cp -R assets logos scripts styles dist/
 

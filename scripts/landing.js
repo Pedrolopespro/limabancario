@@ -304,6 +304,10 @@ const serializeForm = () => {
   return Object.fromEntries(formData.entries());
 };
 
+const createLeadEventId = () =>
+  window.crypto?.randomUUID?.() ||
+  `lead-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+
 const leadFieldLabels = {
   debt_amount: "Valor aproximado das dívidas",
   debt_type: "Dívida que mais preocupa",
@@ -319,11 +323,12 @@ const leadFieldLabels = {
   consent: "Autorização de contato",
 };
 
-const buildLeadPayload = () => {
+const buildLeadPayload = (eventId) => {
   const campaign = window.LFTracking?.getCampaignContext?.() || {};
   return {
     ...serializeForm(),
     ...campaign,
+    meta_event_id: eventId,
     source: "landing_page",
     page_url: window.location.href,
     page_title: document.title,
@@ -370,11 +375,11 @@ const openWhatsAppUrl = (url) => {
   }
 };
 
-const openWhatsAppFallback = (payload, formConfig) => {
+const openWhatsAppFallback = (payload, formConfig, eventId) => {
   const url = getWhatsAppFallbackUrl(payload, formConfig);
   openWhatsAppUrl(url);
 
-  return { ok: true, channel: "whatsapp", url };
+  return { ok: true, channel: "whatsapp", url, eventId };
 };
 
 const showLeadConfirmationModal = (delivery) => {
@@ -423,10 +428,11 @@ const showLeadConfirmationModal = (delivery) => {
 const sendLead = async () => {
   const formConfig = window.LFTracking?.config?.form || window.LF_TRACKING_CONFIG?.form || {};
   const endpoint = formConfig.endpoint?.trim();
-  const payload = buildLeadPayload();
+  const eventId = createLeadEventId();
+  const payload = buildLeadPayload(eventId);
 
   if (!endpoint) {
-    return openWhatsAppFallback(payload, formConfig);
+    return openWhatsAppFallback(payload, formConfig, eventId);
   }
 
   const isFormEncoded = formConfig.format === "form";
@@ -439,11 +445,11 @@ const sendLead = async () => {
       body: isFormEncoded ? new URLSearchParams(payload) : JSON.stringify(payload),
     });
   } catch {
-    return openWhatsAppFallback(payload, formConfig);
+    return openWhatsAppFallback(payload, formConfig, eventId);
   }
 
   if (!response.ok) {
-    return openWhatsAppFallback(payload, formConfig);
+    return openWhatsAppFallback(payload, formConfig, eventId);
   }
 
   let responseBody = {};
@@ -457,6 +463,7 @@ const sendLead = async () => {
   return {
     ok: true,
     channel: responseBody.channel || "webhook",
+    eventId: responseBody.event_id || eventId,
     response,
     whatsappUrl: getWhatsAppFallbackUrl(payload, formConfig),
   };
@@ -493,6 +500,7 @@ form?.addEventListener("submit", async (event) => {
       delivery_channel: delivery.channel,
     });
     trackEvent("generate_lead", {
+      event_id: delivery.eventId,
       form_id: form.id,
       lead_type: "raio_x_divida_empresarial",
       delivery_channel: delivery.channel,
