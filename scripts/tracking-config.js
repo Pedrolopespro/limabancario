@@ -1,8 +1,8 @@
 window.LF_TRACKING_CONFIG = {
-  version: "2026-06-13",
+  version: "2026-06-24",
   environment: "production",
   siteName: "Lima Ferreira Direito Bancário Empresarial",
-  gtmId: "",
+  gtmId: "GTM-WKL6ZSJL",
   ga4MeasurementId: "",
   metaPixelId: "",
   googleAdsId: "",
