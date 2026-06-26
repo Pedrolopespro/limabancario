@@ -12,11 +12,15 @@ const nextButton = document.querySelector("[data-form-next]");
 const backButton = document.querySelector("[data-form-back]");
 const submitButton = document.querySelector("[data-form-submit]");
 const successPanel = document.querySelector("[data-form-success]");
+const successMessage = document.querySelector("[data-form-success-message]");
+const successWhatsappLink = document.querySelector("[data-form-success-whatsapp]");
 const resetButton = document.querySelector("[data-form-reset]");
 const deliveryStatus = document.querySelector("[data-form-delivery-status]");
 const yearElement = document.querySelector("[data-current-year]");
-const analysisSection = document.querySelector("#analise");
-const specialistSection = document.querySelector("#especialista");
+const analysisModal = document.querySelector("[data-analysis-modal]");
+const analysisDialog = document.querySelector("[data-analysis-dialog]");
+const analysisModalBody = document.querySelector("[data-analysis-modal-body]");
+const analysisOpenTriggers = [...document.querySelectorAll('a[href="#analise"]')];
 const heroSection = document.querySelector("#inicio");
 const videoPreview = document.querySelector("[data-video-preview]");
 const videoPlayButton = document.querySelector("[data-video-play]");
@@ -26,14 +30,12 @@ const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
 let currentQuestion = 0;
 let choiceAdvanceTimer;
 let isSubmitting = false;
+let lastFocusedBeforeModal;
+let modalCloseTimer;
 
 const trackEvent = (eventName, parameters = {}) => {
   window.LFTracking?.track(eventName, parameters);
 };
-
-if (specialistSection && analysisSection) {
-  specialistSection.insertAdjacentElement("afterend", analysisSection);
-}
 
 const closeMenu = () => {
   if (!menuToggle || !navigation) return;
@@ -63,6 +65,15 @@ const createMobileCtaRipple = (event) => {
 const releaseMobileCta = () => {
   mobileCta?.classList.remove("is-pressing");
 };
+
+const isAnalysisModalOpen = () => Boolean(analysisModal && !analysisModal.hidden);
+
+const getVisibleFocusableElements = (container) =>
+  [
+    ...container.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    ),
+  ].filter((element) => element.offsetParent !== null);
 
 const getQuestionFields = (questionIndex) => {
   const panel = formQuestions[questionIndex];
@@ -130,6 +141,14 @@ const updateFormQuestion = (questionIndex) => {
 
   window.requestAnimationFrame(() => {
     activeHeading?.focus({ preventScroll: true });
+    if (isAnalysisModalOpen()) {
+      analysisModalBody?.scrollTo({
+        top: 0,
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+      });
+      return;
+    }
+
     formShell?.scrollIntoView({
       behavior: prefersReducedMotion ? "auto" : "smooth",
       block: "start",
@@ -206,6 +225,43 @@ const playVideoWithAudio = async () => {
   }
 };
 
+const openAnalysisModal = (event) => {
+  event?.preventDefault();
+  if (!analysisModal || !analysisDialog) return;
+
+  window.clearTimeout(modalCloseTimer);
+  closeMenu();
+  lastFocusedBeforeModal =
+    event?.currentTarget instanceof HTMLElement
+      ? event.currentTarget
+      : document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : undefined;
+
+  analysisModal.hidden = false;
+  document.body.classList.add("analysis-modal-open");
+  analysisModal.classList.add("is-open");
+
+  window.requestAnimationFrame(() => {
+    updateFormQuestion(currentQuestion);
+  });
+};
+
+const closeAnalysisModal = () => {
+  if (!analysisModal || isSubmitting) return;
+
+  analysisModal.classList.remove("is-open");
+  document.body.classList.remove("analysis-modal-open");
+
+  modalCloseTimer = window.setTimeout(
+    () => {
+      analysisModal.hidden = true;
+      lastFocusedBeforeModal?.focus({ preventScroll: true });
+    },
+    reducedMotionQuery.matches ? 0 : 180,
+  );
+};
+
 menuToggle?.addEventListener("click", () => {
   const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
 
@@ -219,6 +275,11 @@ navigation?.querySelectorAll("a").forEach((link) => {
 });
 
 window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && isAnalysisModalOpen()) {
+    closeAnalysisModal();
+    return;
+  }
+
   if (event.key === "Escape") closeMenu();
 });
 
@@ -240,17 +301,6 @@ videoPreview?.addEventListener("ended", () => {
 });
 startVideoPreview();
 
-if (analysisSection && "IntersectionObserver" in window) {
-  const analysisObserver = new IntersectionObserver(
-    ([entry]) => {
-      document.body.classList.toggle("analysis-visible", entry.isIntersecting);
-    },
-    { threshold: 0.05 },
-  );
-
-  analysisObserver.observe(analysisSection);
-}
-
 if (heroSection && "IntersectionObserver" in window) {
   const heroObserver = new IntersectionObserver(
     ([entry]) => {
@@ -261,6 +311,50 @@ if (heroSection && "IntersectionObserver" in window) {
 
   heroObserver.observe(heroSection);
 }
+
+analysisOpenTriggers.forEach((trigger) => {
+  trigger.addEventListener("click", openAnalysisModal);
+});
+
+analysisModal?.querySelectorAll("[data-analysis-close]").forEach((button) => {
+  button.addEventListener("click", closeAnalysisModal);
+});
+
+analysisModal?.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeAnalysisModal();
+    return;
+  }
+
+  if (event.key !== "Tab" || !analysisDialog) return;
+
+  const focusableElements = getVisibleFocusableElements(analysisDialog);
+  if (!focusableElements.length) {
+    event.preventDefault();
+    analysisDialog.focus({ preventScroll: true });
+    return;
+  }
+
+  const firstFocusable = focusableElements[0];
+  const lastFocusable = focusableElements[focusableElements.length - 1];
+
+  if (event.shiftKey && document.activeElement === firstFocusable) {
+    event.preventDefault();
+    lastFocusable.focus({ preventScroll: true });
+  } else if (!event.shiftKey && document.activeElement === lastFocusable) {
+    event.preventDefault();
+    firstFocusable.focus({ preventScroll: true });
+  }
+});
+
+if (window.location.hash === "#analise") {
+  window.setTimeout(() => openAnalysisModal(), 0);
+}
+
+window.addEventListener("hashchange", () => {
+  if (window.location.hash === "#analise") openAnalysisModal();
+});
 
 nextButton?.addEventListener("click", () => {
   advanceFormQuestion();
@@ -382,49 +476,6 @@ const openWhatsAppFallback = (payload, formConfig, eventId) => {
   return { ok: true, channel: "whatsapp", url, eventId };
 };
 
-const showLeadConfirmationModal = (delivery) => {
-  if (delivery.channel === "whatsapp") return;
-
-  document.querySelector("[data-lead-confirmation-modal]")?.remove();
-
-  const modal = document.createElement("div");
-  modal.className = "lead-modal";
-  modal.dataset.leadConfirmationModal = "";
-  modal.innerHTML = `
-    <div class="lead-modal__backdrop" data-lead-modal-close></div>
-    <div class="lead-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="lead-modal-title">
-      <button class="lead-modal__close" type="button" aria-label="Fechar" data-lead-modal-close>×</button>
-      <p class="eyebrow eyebrow--dark">Solicitação enviada</p>
-      <h3 id="lead-modal-title">Recebemos seu pedido de análise.</h3>
-      <p>A equipe do Lima Ferreira recebeu as informações por e-mail. Se quiser acelerar o atendimento, fale agora pelo WhatsApp.</p>
-      <div class="lead-modal__actions">
-        <a class="button button--primary" href="${delivery.whatsappUrl}" target="_blank" rel="noopener noreferrer" data-lead-whatsapp>
-          Falar agora pelo WhatsApp
-          <span class="button-icon" aria-hidden="true">
-            <svg viewBox="0 0 20 20">
-              <path d="M4 10h11M11 6l4 4-4 4" />
-            </svg>
-          </span>
-        </a>
-        <button class="button button--outline" type="button" data-lead-modal-close>Continuar na página</button>
-      </div>
-    </div>
-  `;
-
-  modal.querySelectorAll("[data-lead-modal-close]").forEach((button) => {
-    button.addEventListener("click", () => modal.remove());
-  });
-  modal.querySelector("[data-lead-whatsapp]")?.addEventListener("click", () => {
-    trackEvent("lf_post_submit_whatsapp_click", {
-      form_id: form?.id,
-      delivery_channel: delivery.channel,
-    });
-  });
-
-  document.body.appendChild(modal);
-  modal.querySelector(".lead-modal__dialog")?.focus();
-};
-
 const sendLead = async () => {
   const formConfig = window.LFTracking?.config?.form || window.LF_TRACKING_CONFIG?.form || {};
   const endpoint = formConfig.endpoint?.trim();
@@ -510,16 +561,18 @@ form?.addEventListener("submit", async (event) => {
 
     form.hidden = true;
     document.querySelector(".form-progress")?.setAttribute("hidden", "");
-    const successText = successPanel?.querySelector("p:last-of-type");
-    if (successText) {
-      successText.textContent =
+    if (successMessage) {
+      successMessage.textContent =
         delivery.channel === "whatsapp"
-          ? "Abrimos o WhatsApp com as respostas preenchidas. Envie a mensagem para que a equipe receba o caso e faça o retorno."
-          : "A equipe recebeu as informações iniciais por e-mail e entrará em contato pelos canais informados.";
+          ? "Abrimos o WhatsApp com as respostas preenchidas. Envie a mensagem para concluir o envio e nossa equipe retornará o mais breve possível."
+          : "A solicitação de Raio-X foi enviada com sucesso. Nossa equipe analisará as informações iniciais e entrará em contato o mais breve possível.";
+    }
+    if (successWhatsappLink) {
+      successWhatsappLink.href = delivery.whatsappUrl || delivery.url || "#";
+      successWhatsappLink.dataset.deliveryChannel = delivery.channel;
     }
     successPanel.hidden = false;
     successPanel.focus();
-    showLeadConfirmationModal(delivery);
   } catch (error) {
     trackEvent("lf_form_submit_error", {
       form_id: form.id,
@@ -539,11 +592,22 @@ form?.addEventListener("submit", async (event) => {
   }
 });
 
+successWhatsappLink?.addEventListener("click", () => {
+  trackEvent("lf_post_submit_whatsapp_click", {
+    form_id: form?.id,
+    delivery_channel: successWhatsappLink.dataset.deliveryChannel || "webhook",
+  });
+});
+
 resetButton?.addEventListener("click", () => {
   form?.reset();
   form.hidden = false;
   document.querySelector(".form-progress")?.removeAttribute("hidden");
   successPanel.hidden = true;
+  if (successWhatsappLink) {
+    successWhatsappLink.href = "#";
+    delete successWhatsappLink.dataset.deliveryChannel;
+  }
   updateFormQuestion(0);
 });
 
@@ -552,12 +616,4 @@ if (yearElement) yearElement.textContent = new Date().getFullYear();
 
 document.querySelector("[data-privacy-settings]")?.addEventListener("click", () => {
   window.LFTracking?.reopenConsent();
-});
-
-trackEvent("lf_form_step_view", {
-  form_id: form?.id,
-  question_index: 1,
-  question_total: formQuestions.length,
-  question_id: formQuestions[0]?.querySelector("h3")?.id,
-  question_section: formQuestions[0]?.dataset.questionSection,
 });

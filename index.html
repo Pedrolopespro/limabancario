@@ -11,11 +11,11 @@
     <title>Raio-X da Dívida Empresarial | Lima Ferreira Advogados</title>
     <link rel="icon" href="logos/lima_ferreira_bancario_compacta_ivory_sem_fundo.png" />
     <link rel="stylesheet" href="styles/tokens.css?v=20260612-mobile-type-system" />
-    <link rel="stylesheet" href="styles/landing.css?v=20260621-crm-popup" />
+    <link rel="stylesheet" href="styles/landing.css?v=20260626-thank-you-v1" />
     <link rel="stylesheet" href="styles/tracking.css?v=20260613-tracking-suite" />
     <script src="scripts/tracking-config.js?v=20260624-gtm-web"></script>
-    <script src="scripts/tracking.js?v=20260613-tracking-suite" defer></script>
-    <script src="scripts/landing.js?v=20260621-crm-popup" defer></script>
+    <script src="scripts/tracking.js?v=20260626-thank-you-v1" defer></script>
+    <script src="scripts/landing.js?v=20260626-thank-you-v1" defer></script>
   </head>
 
   <body>
@@ -604,28 +604,54 @@
         </div>
       </section>
 
-      <section id="analise" class="analysis-section">
-        <div class="analysis-section__grid" aria-hidden="true"></div>
-        <div class="container analysis-layout">
-          <div class="analysis-copy">
+      <div id="analise" class="analysis-modal" data-analysis-modal hidden>
+        <div class="analysis-modal__backdrop" data-analysis-close></div>
+        <div
+          class="analysis-modal__dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="analysis-modal-title"
+          aria-describedby="analysis-modal-description"
+          tabindex="-1"
+          data-analysis-dialog
+        >
+          <div class="analysis-modal__intro">
+            <button
+              class="analysis-modal__close"
+              type="button"
+              aria-label="Fechar formulário"
+              data-analysis-close
+            >
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M5 5l10 10M15 5 5 15" />
+              </svg>
+            </button>
+
             <p class="section-number section-number--light">Análise inicial</p>
-            <h2>O próximo passo começa com o Raio-X da sua dívida empresarial.</h2>
-            <p class="body-large">
-              Compartilhe o cenário atual. A equipe identifica quais dívidas, documentos e riscos
+            <h2 id="analysis-modal-title">Raio-X inicial da sua dívida empresarial.</h2>
+            <p id="analysis-modal-description" class="body-large">
+              Responda em poucos passos. A equipe identifica dívidas, documentos e riscos que
               precisam ser avaliados para definir o melhor caminho.
             </p>
 
-            <div class="analysis-assurance">
-              <span class="analysis-assurance__icon" aria-hidden="true">
+            <div class="analysis-modal__assurance">
+              <span class="analysis-modal__assurance-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24">
                   <path d="M12 3 4 7v5c0 5 3.4 8 8 9 4.6-1 8-4 8-9V7l-8-4ZM9 12l2 2 4-4" />
                 </svg>
               </span>
-              <p>As informações são usadas apenas para avaliação inicial e contato da equipe.</p>
+              <p>Dados usados apenas para avaliação inicial e contato da equipe.</p>
+            </div>
+
+            <div class="analysis-modal__badges" aria-label="Características do formulário">
+              <span>2 min</span>
+              <span>Sem compromisso</span>
+              <span>Atendimento online</span>
             </div>
           </div>
 
-          <div class="form-shell">
+          <div class="analysis-modal__body" data-analysis-modal-body>
+            <div class="form-shell">
             <div class="form-progress" aria-label="Progresso do formulário">
               <div class="form-progress__bar" aria-hidden="true">
                 <span data-progress-bar></span>
@@ -1043,19 +1069,38 @@
                   <path d="M5 12l4 4L19 6" />
                 </svg>
               </span>
-              <p class="eyebrow eyebrow--dark">Informações registradas</p>
-              <h3>Solicitação de Raio-X enviada.</h3>
-              <p>
-                A equipe recebeu as informações iniciais e entrará em contato pelos canais
-                informados.
+              <p class="eyebrow eyebrow--dark">Solicitação enviada</p>
+              <h3>Obrigado. Seu pedido de Raio-X foi recebido.</h3>
+              <p data-form-success-message>
+                A solicitação de Raio-X foi enviada com sucesso. Nossa equipe analisará as
+                informações iniciais e entrará em contato o mais breve possível.
               </p>
-              <button class="button button--outline" type="button" data-form-reset>
-                Preencher novamente
-              </button>
+
+              <div class="form-success__next">
+                <p>Precisa acelerar o atendimento?</p>
+                <a
+                  class="button button--primary"
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-form-success-whatsapp
+                >
+                  Falar imediatamente no WhatsApp
+                  <span class="button-icon" aria-hidden="true">
+                    <svg viewBox="0 0 20 20">
+                      <path d="M4 10h11M11 6l4 4-4 4" />
+                    </svg>
+                  </span>
+                </a>
+                <button class="button button--outline" type="button" data-form-reset>
+                  Preencher novamente
+                </button>
+              </div>
+            </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </main>
 
     <footer class="site-footer">

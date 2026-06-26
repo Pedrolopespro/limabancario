@@ -343,7 +343,7 @@
       !anchor ||
       anchor.closest("[data-tracking-consent]") ||
       anchor.closest("#analysis-form") ||
-      anchor.matches("[data-video-play], [data-privacy-settings]")
+      anchor.matches("[data-video-play], [data-privacy-settings], [data-analysis-close]")
     ) {
       return null;
     }
