@@ -27,6 +27,7 @@ jobs:
           cp storage/.htaccess dist/storage/.htaccess
           cp -R painel dist/
           cp -R assets logos scripts styles dist/
+          printf "%s\n" "$GITHUB_SHA" > dist/deploy-check.txt
       - name: Publicar na HostGator
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
@@ -36,5 +37,5 @@ jobs:
           protocol: ftps
           port: 21
           local-dir: ./dist/
-          server-dir: ./
-          state-name: .ftp-deploy-sync-state-limabancario.json
+          server-dir: /empresarial/
+          state-name: .ftp-deploy-sync-state-limabancario-absolute-empresarial.json
