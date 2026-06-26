@@ -37,5 +37,5 @@ jobs:
           protocol: ftps
           port: 21
           local-dir: ./dist/
-          server-dir: ./
-          state-name: .ftp-deploy-sync-state-limabancario.json
+          server-dir: ./public_html/empresarial/
+          state-name: .ftp-deploy-sync-state-limabancario-production.json
