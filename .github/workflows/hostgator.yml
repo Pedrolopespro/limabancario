@@ -28,6 +28,46 @@ jobs:
           cp -R painel dist/
           cp -R assets logos scripts styles dist/
           printf "%s\n" "$GITHUB_SHA" > dist/deploy-check.txt
+
+      - name: Diagnosticar raiz FTP
+        env:
+          FTP_SERVER: ${{ secrets.HOSTGATOR_FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.HOSTGATOR_FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.HOSTGATOR_FTP_PASSWORD }}
+        run: |
+          sudo apt-get update -y >/dev/null
+          sudo apt-get install -y lftp >/dev/null
+          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" -p 21 "$FTP_SERVER" -e '
+            set ftp:ssl-force true;
+            set ftp:ssl-protect-data true;
+            set ssl:verify-certificate no;
+            set cmd:fail-exit no;
+            echo "== initial ==";
+            pwd;
+            ls;
+            echo "== cd .. ==";
+            cd ..;
+            pwd;
+            ls;
+            echo "== cd / ==";
+            cd /;
+            pwd;
+            ls;
+            echo "== cd /empresarial ==";
+            cd /empresarial;
+            pwd;
+            ls;
+            echo "== cd ../empresarial ==";
+            cd ../empresarial;
+            pwd;
+            ls;
+            echo "== cd /public_html/empresarial ==";
+            cd /public_html/empresarial;
+            pwd;
+            ls;
+            bye;
+          '
+
       - name: Publicar na HostGator
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
