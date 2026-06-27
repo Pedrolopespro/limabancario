@@ -27,49 +27,6 @@ jobs:
           cp storage/.htaccess dist/storage/.htaccess
           cp -R painel dist/
           cp -R assets logos scripts styles dist/
-          printf "%s\n" "$GITHUB_SHA" > dist/deploy-check.txt
-
-      - name: Diagnosticar raiz FTP
-        env:
-          FTP_SERVER: ${{ secrets.HOSTGATOR_FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.HOSTGATOR_FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.HOSTGATOR_FTP_PASSWORD }}
-        run: |
-          sudo apt-get update -y >/dev/null
-          sudo apt-get install -y lftp >/dev/null
-          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" -p 21 "$FTP_SERVER" -e '
-            set ftp:ssl-force true;
-            set ftp:ssl-protect-data true;
-            set ssl:verify-certificate no;
-            set cmd:fail-exit no;
-            echo "== initial ==";
-            pwd;
-            ls;
-            echo "== cd /empresarial ==";
-            cd /;
-            cd /empresarial;
-            pwd;
-            echo "== cd /public_html/empresarial ==";
-            cd /;
-            cd /public_html/empresarial;
-            pwd;
-            echo "== cpanel absolute probes ==";
-            cd /; cd /home/advoc370/public_html/empresarial; pwd;
-            cd /; cd /home1/advoc370/public_html/empresarial; pwd;
-            cd /; cd /home2/advoc370/public_html/empresarial; pwd;
-            cd /; cd /home3/advoc370/public_html/empresarial; pwd;
-            cd /; cd /home4/advoc370/public_html/empresarial; pwd;
-            cd /; cd /home5/advoc370/public_html/empresarial; pwd;
-            cd /; cd /home6/advoc370/public_html/empresarial; pwd;
-            cd /; cd /home7/advoc370/public_html/empresarial; pwd;
-            cd /; cd /home8/advoc370/public_html/empresarial; pwd;
-            cd /; cd /home9/advoc370/public_html/empresarial; pwd;
-            cd /; cd /home10/advoc370/public_html/empresarial; pwd;
-            cd /; cd /home11/advoc370/public_html/empresarial; pwd;
-            cd /; cd /home12/advoc370/public_html/empresarial; pwd;
-            bye;
-          '
-
       - name: Publicar na HostGator
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
@@ -79,5 +36,5 @@ jobs:
           protocol: ftps
           port: 21
           local-dir: ./dist/
-          server-dir: /empresarial/
-          state-name: .ftp-deploy-sync-state-limabancario-absolute-empresarial.json
+          server-dir: ./
+          state-name: .ftp-deploy-sync-state-limabancario.json
