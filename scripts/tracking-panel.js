@@ -1,7 +1,7 @@
 (function initializeTrackingPanel() {
   "use strict";
 
-  const accessHash = "a966c24a8f31f799084b8366b19400d8c2e8f4127aa1aba7d6d60e9de525b62b";
+  const accessHash = "18575e7e46ca29367b43f09f026e1ba4d8a7f6026aee92bc1545ec56de2738ef";
   const repository = "Pedrolopespro/limabancario";
   const configPath = "scripts/tracking-config.js";
   const previewStorageKey = "lf_tracking_preview_config";
