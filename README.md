@@ -5,12 +5,13 @@ Ferreira Advogados.
 
 ## Site publicado
 
-- Producao: Netlify, conectado ao repositorio `Pedrolopespro/limabancario` na
-  branch `main`.
+- Producao: `https://limaferreiraadvogados.com.br/empresarial/`, servida pela
+  HostGator.
 - GitHub Pages: `https://pedrolopespro.github.io/limabancario/` (espelho
   tecnico).
-- O workflow da HostGator e manual e fica reservado aos arquivos PHP do
-  CRM/API. Ele nao deve ser usado para publicar a landing page.
+- O workflow da HostGator esta manual enquanto as credenciais FTP sao
+  renovadas. Depois disso, ele pode voltar a publicar a landing page e os
+  arquivos PHP do CRM/API a cada push na `main`.
 
 ## Executar localmente
 
