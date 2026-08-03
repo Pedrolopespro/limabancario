@@ -8,9 +8,9 @@
     <meta name="theme-color" content="#071827" />
     <title>Painel de Rastreamento | Lima Ferreira</title>
     <link rel="icon" href="../logos/lima_ferreira_bancario_compacta_ivory_sem_fundo.png" />
-    <link rel="stylesheet" href="../styles/tracking-panel.css?v=20260613-tracking-suite" />
+    <link rel="stylesheet" href="../styles/tracking-panel.css?v=20260803-access-visibility" />
     <script src="../scripts/tracking-config.js?v=20260624-gtm-web"></script>
-    <script src="../scripts/tracking-panel.js?v=20260613-tracking-suite" defer></script>
+    <script src="../scripts/tracking-panel.js?v=20260803-access-visibility" defer></script>
   </head>
 
   <body>
@@ -23,10 +23,27 @@
         <p class="eyebrow">Área interna</p>
         <h1>Painel de rastreamento</h1>
         <p>Informe a chave interna para acessar a configuração.</p>
-        <label>
+        <label for="access_key">
           <span>Chave de acesso</span>
-          <input type="password" name="access_key" autocomplete="current-password" required />
         </label>
+        <div class="password-field">
+          <input
+            id="access_key"
+            type="password"
+            name="access_key"
+            autocomplete="current-password"
+            required
+          />
+          <button
+            class="password-toggle"
+            type="button"
+            data-access-visibility
+            aria-pressed="false"
+            aria-label="Mostrar chave de acesso"
+          >
+            Mostrar
+          </button>
+        </div>
         <button type="submit">Entrar</button>
         <p class="form-message" data-access-message aria-live="polite"></p>
       </form>

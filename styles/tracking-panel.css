@@ -94,6 +94,39 @@ a {
   border-color: #f5f1e4;
 }
 
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 92px;
+}
+
+.access-card .password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: auto;
+  min-height: 36px;
+  margin: 0;
+  padding: 0 12px;
+  border: 1px solid rgba(245, 241, 228, 0.18);
+  border-radius: 999px;
+  color: rgba(245, 241, 228, 0.9);
+  font-size: 13px;
+  font-weight: 700;
+  transform: translateY(-50%);
+  background: rgba(245, 241, 228, 0.08);
+}
+
+.access-card .password-toggle:hover,
+.access-card .password-toggle:focus-visible {
+  border-color: rgba(245, 241, 228, 0.72);
+  outline: 0;
+  background: rgba(245, 241, 228, 0.16);
+}
+
 .access-card button {
   width: 100%;
   min-height: 52px;

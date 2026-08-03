@@ -8,6 +8,8 @@
   const eventLogKey = "lf_tracking_event_log";
   const accessGate = document.querySelector("[data-access-gate]");
   const accessForm = document.querySelector("[data-access-form]");
+  const accessInput = accessForm?.elements.access_key;
+  const accessVisibilityToggle = document.querySelector("[data-access-visibility]");
   const accessMessage = document.querySelector("[data-access-message]");
   const panel = document.querySelector("[data-panel]");
   const configForm = document.querySelector("[data-config-form]");
@@ -22,6 +24,17 @@
     return [...new Uint8Array(hash)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
   };
 
+  const setAccessVisibility = (isVisible) => {
+    if (!accessInput || !accessVisibilityToggle) return;
+    accessInput.type = isVisible ? "text" : "password";
+    accessVisibilityToggle.textContent = isVisible ? "Ocultar" : "Mostrar";
+    accessVisibilityToggle.setAttribute("aria-pressed", String(isVisible));
+    accessVisibilityToggle.setAttribute(
+      "aria-label",
+      isVisible ? "Ocultar chave de acesso" : "Mostrar chave de acesso",
+    );
+  };
+
   const unlockPanel = () => {
     sessionStorage.setItem("lf_tracking_panel_access", "granted");
     accessGate.hidden = true;
@@ -34,6 +47,7 @@
     panel.hidden = true;
     accessGate.hidden = false;
     accessForm.reset();
+    setAccessVisibility(false);
     accessForm.elements.access_key.focus();
   };
 
@@ -205,6 +219,10 @@
     }
     accessMessage.textContent = "";
     unlockPanel();
+  });
+
+  accessVisibilityToggle?.addEventListener("click", () => {
+    setAccessVisibility(accessInput?.type === "password");
   });
 
   document.querySelector("[data-lock-panel]")?.addEventListener("click", lockPanel);
