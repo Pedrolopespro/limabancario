@@ -5,8 +5,12 @@ Ferreira Advogados.
 
 ## Site publicado
 
-- GitHub Pages: `https://pedrolopespro.github.io/limabancario/`
-- A publicacao e atualizada automaticamente a cada push na branch `main`.
+- Producao: Netlify, conectado ao repositorio `Pedrolopespro/limabancario` na
+  branch `main`.
+- GitHub Pages: `https://pedrolopespro.github.io/limabancario/` (espelho
+  tecnico).
+- O workflow da HostGator e manual e fica reservado aos arquivos PHP do
+  CRM/API. Ele nao deve ser usado para publicar a landing page.
 
 ## Executar localmente
 
@@ -35,8 +39,10 @@ Acesse `http://127.0.0.1:4173`.
 
 ## Painel de rastreamento
 
-- Producao: `https://pedrolopespro.github.io/limabancario/painel/`
-- Chave inicial: `LF-2026-TRACK`
+- Producao: `https://limaferreiraadvogados.com.br/empresarial/painel/`
+- A senha do painel nao deve ser registrada no repositorio. Guarde-a no
+  gerenciador de senhas da operacao; o codigo mantem apenas o hash de
+  verificacao.
 - O painel nao aparece na navegacao e possui `noindex`.
 - A publicacao exige um Fine-grained Personal Access Token do GitHub com
   `Contents: Read and write` somente neste repositorio.
