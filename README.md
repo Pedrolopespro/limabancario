@@ -9,9 +9,8 @@ Ferreira Advogados.
   HostGator.
 - GitHub Pages: `https://pedrolopespro.github.io/limabancario/` (espelho
   tecnico).
-- O workflow da HostGator esta manual enquanto as credenciais FTP sao
-  renovadas. Depois disso, ele pode voltar a publicar a landing page e os
-  arquivos PHP do CRM/API a cada push na `main`.
+- A publicacao na HostGator atualiza a landing page e os arquivos PHP do
+  CRM/API a cada push na `main`.
 
 ## Executar localmente
 
